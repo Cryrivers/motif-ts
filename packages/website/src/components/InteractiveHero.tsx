@@ -343,7 +343,7 @@ export default function InteractiveHero() {
   }, [runSimulation]);
 
   return (
-    <section className="relative flex h-[90vh] w-full flex-col items-center justify-center overflow-hidden pt-20">
+    <section className="flex flex-col items-center justify-center pt-20">
       {/* Background Grid */}
       <div className="grid-bg pointer-events-none absolute inset-0 z-0" />
 

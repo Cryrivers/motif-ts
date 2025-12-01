@@ -5,7 +5,7 @@ import Link from 'next/link';
 
 export default function Header() {
   return (
-    <header className="sticky top-0 z-50 border-b border-white/10 bg-black/50 backdrop-blur-md supports-[backdrop-filter]:bg-black/20">
+    <header className="sticky top-0 z-50 border-b border-white/10 bg-black/50 backdrop-blur-md supports-backdrop-filter:bg-black/20">
       <a
         href="#content"
         className="sr-only focus:not-sr-only focus:absolute focus:top-2 focus:left-4 focus:z-50 focus:rounded-md focus:bg-white focus:px-3 focus:py-1.5 focus:text-black"
@@ -13,10 +13,7 @@ export default function Header() {
         Skip to content
       </a>
       <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4">
-        <Link href="#" className="group flex items-center gap-2" aria-label="Motif-ts Home">
-          <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-linear-to-br from-blue-500 to-purple-600 text-lg font-bold text-white shadow-lg shadow-blue-500/20 transition-all group-hover:shadow-blue-500/40">
-            M
-          </div>
+        <Link href="#" className="group flex items-center gap-2" aria-label="Motif-ts Home"> 
           <span className="text-xl font-bold tracking-tight text-white">motif-ts</span>
         </Link>
 
@@ -32,7 +29,7 @@ export default function Header() {
           </Link>
 
           <div className="h-4 w-px bg-white/10" />
-
+          
           <a
             href="https://github.com/rational-studio/motif-ts"
             target="_blank"
