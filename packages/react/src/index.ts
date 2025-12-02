@@ -1,4 +1,4 @@
-import { type StepCreatorAny, type WorkflowAPI, type CurrentStep } from '@motif-ts/core';
+import { type CurrentStep, type StepCreatorAny, type WorkflowAPI } from '@motif-ts/core';
 import { useSyncExternalStore } from 'react';
 
 export function useWorkflow<const Creators extends readonly StepCreatorAny[]>({
@@ -10,6 +10,9 @@ export function useWorkflow<const Creators extends readonly StepCreatorAny[]>({
 
 const isWorkflowRunningServerFn = () => false;
 
-export function useIsWorkflowRunning({ subscribe, $$INTERNAL: { isWorkflowRunning } }: WorkflowAPI<readonly StepCreatorAny[]>): boolean {
+export function useIsWorkflowRunning({
+  subscribe,
+  $$INTERNAL: { isWorkflowRunning },
+}: WorkflowAPI<readonly StepCreatorAny[]>): boolean {
   return useSyncExternalStore(subscribe, isWorkflowRunning, isWorkflowRunningServerFn);
 }

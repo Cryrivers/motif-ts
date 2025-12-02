@@ -1,5 +1,5 @@
-import { step, workflow } from "@motif-ts/core/dist/index.mjs";
-import z from "zod";
+import { step, workflow } from '@motif-ts/core/dist/index.mjs';
+import z from 'zod';
 
 export const InputStep = step(
   {
@@ -20,6 +20,9 @@ export const VerifyStep = step(
     kind: 'verify',
     inputSchema: z.object({ email: z.string() }).loose(),
     outputSchema: z.object({ email: z.string(), isVerified: z.boolean() }).loose(),
+    options: {
+      noHistory: true,
+    },
   },
   ({ transitionIn, next, input }) => {
     transitionIn(async () => {
@@ -63,7 +66,13 @@ export const PlanStep = step(
 export const SuccessStep = step(
   {
     kind: 'success',
-    inputSchema: z.object({ email: z.string(), name: z.string().optional(), role: z.string().optional(), plan: z.string().optional(), isVerified: z.boolean().optional() }),
+    inputSchema: z.object({
+      email: z.string(),
+      name: z.string().optional(),
+      role: z.string().optional(),
+      plan: z.string().optional(),
+      isVerified: z.boolean().optional(),
+    }),
   },
   ({ input }) => {
     return {
@@ -72,7 +81,6 @@ export const SuccessStep = step(
   },
 );
 
-
-export const initiateWorkflow =() => workflow([InputStep, VerifyStep, ProfileStep, PlanStep, SuccessStep]);
+export const initiateWorkflow = () => workflow([InputStep, VerifyStep, ProfileStep, PlanStep, SuccessStep]);
 
 export type InteractiveWorkflow = ReturnType<typeof initiateWorkflow>;

@@ -78,7 +78,7 @@ export function workflow<const Creators extends readonly StepCreatorAny[]>(inven
     notify(currentStep);
   };
 
-  const runTransitionInOnce = () => {
+  const runTransitionInOnce = async () => {
     if (!context || context.hasRunIn) {
       return;
     }
@@ -93,19 +93,20 @@ export function workflow<const Creators extends readonly StepCreatorAny[]>(inven
       if (typeof result === 'function') {
         context.inCleanups.push(result);
       } else if (isPromise<CleanupFn>(result)) {
-        result
-          .then((cleanup) => {
-            if (typeof cleanup !== 'function') {
-              return;
-            }
-            // If context is still current, register; otherwise, invoke immediately
-            if (context && context.version === version) {
-              context.inCleanups.push(cleanup);
-            } else {
-              safeInvokeCleanup(cleanup);
-            }
-          })
-          .catch((err) => handleAsyncError(err, 'transitionIn', i));
+        try {
+          const cleanup = await result;
+          if (typeof cleanup !== 'function') {
+            return;
+          }
+          // If context is still current, register; otherwise, invoke immediately
+          if (context && context.version === version) {
+            context.inCleanups.push(cleanup);
+          } else {
+            safeInvokeCleanup(cleanup);
+          }
+        } catch (err) {
+          handleAsyncError(err, 'transitionIn', i);
+        }
       }
     }
     context.hasRunIn = true;
@@ -118,7 +119,10 @@ export function workflow<const Creators extends readonly StepCreatorAny[]>(inven
     // mark as not yet executed; used to flush late async cleanups
     outCleanupsForBack[CLEANUP_ARRAY_EXECUTED] = false;
     if (currentStep) {
-      _ASSERT(currentStep.status === 'ready', 'currentStep.status must be ready');
+      _ASSERT(
+        currentStep.status === 'ready' || currentStep.status === 'transitionIn',
+        'currentStep.status must be ready or transitionIn',
+      );
       _ASSERT(
         currentStep.instance.name === currentStep.instance.name,
         'currentStep.stepCreator.name must be currentStep.stepCreator.name',
@@ -229,7 +233,9 @@ export function workflow<const Creators extends readonly StepCreatorAny[]>(inven
           nextInput = nextNode.inputSchema.parse(nextInput);
         }
         const prevOutCleanups = runExitSequence();
-        history.push({ node, input: inputForNode, outCleanupOnBack: prevOutCleanups });
+        if (!node.options?.noHistory) {
+          history.push({ node, input: inputForNode, outCleanupOnBack: prevOutCleanups });
+        }
         transitionInto(nextNode, nextInput, false, []);
       },
     };
@@ -266,7 +272,7 @@ export function workflow<const Creators extends readonly StepCreatorAny[]>(inven
     });
   };
 
-  const transitionInto = <Input, Output, Config, Api extends StepAPI, Store>(
+  const transitionInto = async <Input, Output, Config, Api extends StepAPI, Store>(
     stepInstance: StepInstance<Input, Output, Config, Api, Store>,
     input: Input,
     isBack: boolean,
@@ -312,7 +318,9 @@ export function workflow<const Creators extends readonly StepCreatorAny[]>(inven
         nextInput = nextNode.inputSchema.parse(nextInput);
       }
       const prevOutCleanups = runExitSequence();
-      history.push({ node: stepInstance, input, outCleanupOnBack: prevOutCleanups });
+      if (!stepInstance.options?.noHistory) {
+        history.push({ node: stepInstance, input, outCleanupOnBack: prevOutCleanups });
+      }
       transitionInto(nextNode, nextInput, false, []);
     };
 
@@ -379,7 +387,7 @@ export function workflow<const Creators extends readonly StepCreatorAny[]>(inven
     }
 
     // Execute transitionIn once
-    runTransitionInOnce();
+    await runTransitionInOnce();
 
     // Run initial effects (first render)
     context.effects = processEffects(effectsDefs);
@@ -392,15 +400,20 @@ export function workflow<const Creators extends readonly StepCreatorAny[]>(inven
         })
       : noop;
 
-    _ASSERT(currentStep?.status === 'transitionIn', 'currentStep.status must be transitionIn');
-    if (secondPassRebuildCurrent) {
-      rebuildCurrent();
-    } else {
-      setCurrentStep({
-        ...currentStep,
-        status: 'ready',
-        canGoBack: computeCanGoBack(currentStep.instance, edges, history),
-      });
+    // asynchronous transitionIn does not make it advance to next step, so
+    // we need to rebuild current step to reflect the new state
+    // also assert that current step is still transitionIn
+    if (currentStep?.name === stepInstance.name && currentStep.kind === stepInstance.kind) {
+      _ASSERT(currentStep?.status === 'transitionIn', 'currentStep.status must be transitionIn.');
+      if (secondPassRebuildCurrent) {
+        rebuildCurrent();
+      } else {
+        setCurrentStep({
+          ...currentStep,
+          status: 'ready',
+          canGoBack: computeCanGoBack(currentStep.instance, edges, history),
+        });
+      }
     }
   };
 

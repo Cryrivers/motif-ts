@@ -13,7 +13,7 @@ export default function Header() {
         Skip to content
       </a>
       <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4">
-        <Link href="#" className="group flex items-center gap-2" aria-label="Motif-ts Home"> 
+        <Link href="#" className="group flex items-center gap-2" aria-label="Motif-ts Home">
           <span className="text-xl font-bold tracking-tight text-white">motif-ts</span>
         </Link>
 
@@ -29,7 +29,7 @@ export default function Header() {
           </Link>
 
           <div className="h-4 w-px bg-white/10" />
-          
+
           <a
             href="https://github.com/rational-studio/motif-ts"
             target="_blank"

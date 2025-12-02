@@ -31,7 +31,7 @@ const PHILOSOPHY_ITEMS = [
   {
     title: 'Immutability',
     description:
-      'State updates are immutable by default, powered by Zustand. This ensures predictable state changes and enables powerful features like time-travel debugging.',
+      'State updates are immutable by default. This ensures predictable state changes and enables powerful features like time-travel debugging.',
     icon: Package,
     color: 'text-orange-400',
     bg: 'bg-orange-500/10',
@@ -43,7 +43,7 @@ const PHILOSOPHY_ITEMS = [
   {
     title: 'Co-location',
     description:
-      'Achieve clear separation of concerns by decoupling UI from business logic. By co-locating logic with its relevant components, you ensure that business rules remain pure, testable, and independent of the view layer.',
+      'Achieve clear separation of concerns by decoupling UI from business logic. The architecture forces you to co-locate logic with its relevant components, ensuring that business rules remain pure, testable, and independent of the view layer.',
     icon: LocateFixed,
     color: 'text-purple-400',
     bg: 'bg-purple-500/10',
@@ -51,7 +51,7 @@ const PHILOSOPHY_ITEMS = [
   {
     title: 'Framework Agnostic',
     description:
-      'The core is UI-agnostic and works in any framework or runtime. Optional adapters integrate with different UIs (React included) without coupling.',
+      'The core is UI-agnostic and works in any framework or runtime. Optional adapters integrate with different UIs without coupling.',
     icon: Layers,
     color: 'text-pink-400',
     bg: 'bg-pink-500/10',

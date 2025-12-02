@@ -1,9 +1,10 @@
 'use client';
 
-import { Code } from "lucide-react"
-import { FC, useEffect, useRef, useState } from "react"
-import GlassPanel from "../../GlassPanel";
-import { Highlighter, createHighlighter } from "shiki";
+import { Code } from 'lucide-react';
+import { FC, useEffect, useRef, useState } from 'react';
+import { createHighlighter, Highlighter } from 'shiki';
+
+import GlassPanel from '../../GlassPanel';
 
 // --- Shiki Hook ---
 const useShiki = (code: string) => {
@@ -57,19 +58,21 @@ const CodeBlock = ({ code }: { code: string }) => {
 
 const YourCode: FC<{ generateCode: () => string }> = ({ generateCode }) => {
   /* Front Face: Generated Code */
-  
-  return <GlassPanel
-                className="absolute inset-0 flex flex-col overflow-hidden border-gray-800 bg-[#0a0c10]"
-                style={{ backfaceVisibility: 'hidden' }}
-              >
-                <div className="flex items-center gap-2 border-b border-gray-800 bg-white/5 px-6 py-4 font-medium text-gray-500">
-                  <Code className="h-4 w-4" />
-                  Your Code
-                </div>
-                <div className="flex-1 overflow-auto p-6">
-                  <CodeBlock code={generateCode()} />
-                </div>
-              </GlassPanel>
-}
 
-export default YourCode
+  return (
+    <GlassPanel
+      className="absolute inset-0 flex flex-col overflow-hidden border-gray-800 bg-[#0a0c10]"
+      style={{ backfaceVisibility: 'hidden' }}
+    >
+      <div className="flex items-center gap-2 border-b border-gray-800 bg-white/5 px-6 py-4 font-medium text-gray-500">
+        <Code className="h-4 w-4" />
+        Your Code
+      </div>
+      <div className="flex-1 overflow-auto p-6">
+        <CodeBlock code={generateCode()} />
+      </div>
+    </GlassPanel>
+  );
+};
+
+export default YourCode;

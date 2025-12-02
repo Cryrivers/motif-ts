@@ -1,4 +1,4 @@
-import { Variants } from "motion/react";
+import { Variants } from 'motion/react';
 
 export const slideVariants: Variants = {
   enter: (direction: number) => ({

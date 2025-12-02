@@ -1,23 +1,23 @@
 'use client';
 
 import { conditionalEdge } from '@motif-ts/core/edge/non-serializable';
+import { useIsWorkflowRunning } from '@motif-ts/react';
 import { Play, RotateCcw } from 'lucide-react';
-import {  motion } from 'motion/react';
+import { motion } from 'motion/react';
 import { useEffect, useState } from 'react';
 import ReactFlow, { Background, Edge, MarkerType, Node, useEdgesState, useNodesState } from 'reactflow';
-import { useIsWorkflowRunning } from '@motif-ts/react';
 
 import 'reactflow/dist/style.css';
 
 import { cn } from '@/lib/cn';
 
-import YourCode from './YourCode';
-import LivePreview from './LivePreview';
 import Button from '../Button';
 import GlassPanel from '../GlassPanel';
 import MotifStepNode, { MotifStepData } from '../MotifStepNode';
 import SectionHeading from '../SectionHeading';
-import { initiateWorkflow, InputStep, VerifyStep, ProfileStep, PlanStep, SuccessStep } from './utils';
+import LivePreview from './LivePreview';
+import { initiateWorkflow, InputStep, PlanStep, ProfileStep, SuccessStep, VerifyStep } from './utils';
+import YourCode from './YourCode';
 
 const nodeTypes = {
   motifStep: MotifStepNode,
@@ -61,10 +61,6 @@ const STEPS_INFO = [
   },
 ];
 
-
-
-
-
 export default function InteractiveShowcase() {
   const [activeSteps, setActiveSteps] = useState<string[]>([]);
   const [nodes, setNodes, onNodesChange] = useNodesState([]);
@@ -72,15 +68,10 @@ export default function InteractiveShowcase() {
   const [useConditional, setUseConditional] = useState(false);
   const [errorShake, setErrorShake] = useState<string | null>(null);
 
-
   const [yourWorkflow, setYourWorkflow] = useState(initiateWorkflow);
-  
+
   // @ts-expect-error fix type error
   const isRunning = useIsWorkflowRunning(yourWorkflow);
-  
-
-
-  
 
   const isValidConnection = (prevId: string, nextId: string) => {
     // Input must be first
@@ -188,7 +179,6 @@ export default function InteractiveShowcase() {
     setNodes((nds) => nds.map((n) => ({ ...n, data: { ...n.data, status: 'idle' } })));
 
     try {
-      
       // Create instances
       const stepInstances: any[] = [];
       const instanceMap = new Map<string, any>();
@@ -250,12 +240,9 @@ export default function InteractiveShowcase() {
       console.error(err);
       if (err.message && err.message.includes('No next step')) {
         handleRestart();
-      } 
+      }
     }
   };
-
-
-
 
   const handleRestart = () => {
     setNodes((nds) => nds.map((n) => ({ ...n, data: { ...n.data, status: 'idle' } })));
@@ -304,7 +291,7 @@ ${connections}
           description="Compose workflows visually or with code. motif-ts keeps them in sync."
         />
 
-        <div className="grid h-[1600px] gap-8 md:grid-cols-2 md:h-[850px]">
+        <div className="grid h-[1600px] gap-8 md:h-[850px] md:grid-cols-2">
           {/* Visual Builder */}
           <GlassPanel className="relative flex flex-col overflow-hidden border-gray-800">
             <div className="absolute top-4 left-4 z-10 flex flex-wrap gap-2">
@@ -392,7 +379,7 @@ ${connections}
               }}
             >
               <YourCode generateCode={generateCode} />
-              {isRunning ? <LivePreview workflow={yourWorkflow} handleRestart={handleRestart} />:null}
+              {isRunning ? <LivePreview workflow={yourWorkflow} handleRestart={handleRestart} /> : null}
             </motion.div>
           </div>
         </div>

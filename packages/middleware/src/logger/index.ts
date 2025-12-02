@@ -4,7 +4,19 @@ export type LoggerOptions = {
   prefix?: string;
   showPayload?: boolean;
   palette?: Partial<
-    Record<'Workflow' | 'Register' | 'Start' | 'Back' | 'Pause' | 'Resume' | 'TransitionIn' | 'Ready' | 'TransitionOut' | 'Error', string>
+    Record<
+      | 'Workflow'
+      | 'Register'
+      | 'Start'
+      | 'Back'
+      | 'Pause'
+      | 'Resume'
+      | 'TransitionIn'
+      | 'Ready'
+      | 'TransitionOut'
+      | 'Error',
+      string
+    >
   >;
 };
 

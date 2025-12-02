@@ -26,6 +26,10 @@ export type BuildArgs<Input, Output, Config, Store> = {
 } & ([Store] extends [EMPTY] ? {} : { store: Store }) &
   ([Config] extends [EMPTY] ? {} : { config: Config });
 
+export type Options = {
+  noHistory?: boolean;
+};
+
 export type StepDef<
   Kind extends string,
   Input,
@@ -39,6 +43,7 @@ export type StepDef<
   outputSchema?: ZodType<Output>;
   configSchema?: ZodType<Config>;
   createStore?: StateCreator<Store, [], Mos>;
+  options?: Options;
 };
 
 export type StepAPI = Record<string, unknown>;
@@ -52,6 +57,7 @@ export type StepInstance<Input, Output, Config, Api extends StepAPI, Store> = {
   configSchema?: ZodType<Config>;
   storeApi?: StoreApi<Store>;
   config?: Config;
+  options?: Options;
   build: (args: BuildArgs<Input, Output, Config, Store>) => Api;
 };
 
