@@ -214,7 +214,6 @@ export default function InteractiveShowcase() {
 
       const unsub = yourWorkflow.subscribe((currentStep) => {
         const { kind, status } = currentStep;
-        console.log(kind, status);
         if (status === 'transitionIn' || status === 'ready' || status === 'transitionOut') {
           // Update status for the current node, and reset others to idle
           setNodes((nds) =>

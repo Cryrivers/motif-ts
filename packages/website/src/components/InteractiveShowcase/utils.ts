@@ -1,5 +1,6 @@
-import { step, workflow } from '@motif-ts/core/dist/index.mjs';
+import { step, workflow } from '@motif-ts/core';
 import z from 'zod';
+import { type StateCreator } from 'zustand/vanilla';
 
 export const InputStep = step(
   {
@@ -15,21 +16,55 @@ export const InputStep = step(
   },
 );
 
+interface VerifyState {
+  isActive: boolean;
+  timeLeft: number;
+  maxTime: number;
+  decrement: () => void;
+  start: () => void;
+}
+
+const verifyStore: StateCreator<VerifyState> = (set) => ({
+  isActive: false,
+  timeLeft: 3,
+  maxTime: 3,
+  decrement: () => set((s) => ({ timeLeft: Math.max(0, s.timeLeft - 1) })),
+  start: () => set({ isActive: true }),
+});
+
 export const VerifyStep = step(
   {
     kind: 'verify',
     inputSchema: z.object({ email: z.string() }).loose(),
     outputSchema: z.object({ email: z.string(), isVerified: z.boolean() }).loose(),
+    createStore: verifyStore,
     options: {
       noHistory: true,
     },
   },
-  ({ transitionIn, next, input }) => {
-    transitionIn(async () => {
-      await new Promise((resolve) => setTimeout(resolve, 1000)); // Simulate API
-      next({ ...input, isVerified: true });
-    });
-    return {};
+  ({ next, input, store, effect }) => {
+    // Effect: Handle countdown interval
+    effect(() => {
+      let interval: NodeJS.Timeout;
+      if (store.isActive && store.timeLeft > 0) {
+        interval = setInterval(() => store.decrement(), 1000);
+      }
+      return () => clearInterval(interval);
+    }, [store.isActive]); // Re-run when active state changes
+
+    // Effect: Auto-advance when time reaches 0
+    effect(() => {
+      if (store.isActive && store.timeLeft === 0) {
+        next({ ...input, isVerified: true });
+      }
+    }, [store.timeLeft, store.isActive]);
+
+    return {
+      timeLeft: store.timeLeft,
+      maxTime: store.maxTime,
+      isActive: store.isActive,
+      start: store.start,
+    };
   },
 );
 

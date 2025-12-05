@@ -75,7 +75,15 @@ const LivePreview: FC<{ workflow: InteractiveWorkflow; handleRestart: () => void
             <AnimatePresence mode="wait" custom={navState.direction}>
               {current.kind === 'input' && <InputPage onSubmit={current.state.submit} custom={navState.direction} />}
 
-              {current.kind === 'verify' && <VerifyPage custom={navState.direction} />}
+              {current.kind === 'verify' && (
+                <VerifyPage
+                  timeLeft={current.state.timeLeft}
+                  maxTime={current.state.maxTime}
+                  isActive={current.state.isActive}
+                  onStart={current.state.start}
+                  custom={navState.direction}
+                />
+              )}
 
               {current.kind === 'profile' && (
                 <ProfilePage onSubmit={current.state.submitProfile} custom={navState.direction} />

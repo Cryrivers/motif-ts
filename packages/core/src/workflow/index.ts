@@ -261,6 +261,12 @@ export function workflow<const Creators extends readonly StepCreatorAny[]>(inven
     // Effect diffing / rerun
     context.effects = processEffects(effectsDefs, context.effects);
 
+    // If effects triggered a transition, the current step has changed.
+    // We should not overwrite the new state with the old step's ready state.
+    if (currentStep && currentStep.instance !== node) {
+      return;
+    }
+
     setCurrentStep({
       status: 'ready',
       kind: currentStep.instance.kind,

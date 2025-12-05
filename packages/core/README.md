@@ -1,72 +1,41 @@
-# motif-ts: Workflow Orchestrator
-**Dead Simple. Fully Typed. Effortlessly Orchestrated**
+# @motif-ts/core
 
----
+The core engine for `motif-ts`. This package provides the foundational primitives for defining steps, workflows, and the state machine logic that orchestrates them.
 
+For a high-level overview and Quick Start, please see the [root README](../../README.md).
 
-Deterministic workflow orchestrator for Node.js and browsers with strongly typed 1‑in/1‑out steps, lifecycle hooks with cleanups, store‑driven rebuilds, conditional/transform edges, and bidirectional navigation with history.
+## Concepts
 
-See `tests/` for comprehensive, deterministic examples.
+`@motif-ts/core` is built around a few specific concepts that enable deterministic, type-safe orchestration:
 
-## Features
+1.  **Steps**: Atomic units of logic with lifecycle hooks (`transitionIn`, `transitionOut`) and reactive effects.
+2.  **Workflow**: The orchestrator that manages the state machine, transitions, and history.
+3.  **Edges**: The connections between steps (Default, Unidirectional, Conditional, Transform).
+4.  **Store**: Local, reactive state for steps (powered by Zustand).
 
-- Strong types with Zod: validate step `input`/`output` at runtime
-- Lifecycle hooks with cleanups: `transitionIn`, `transitionOut`, `effect`
-- Store integration: optional Zustand store per step with rebuild on changes
-- Edges: bidirectional by default; unidirectional, conditional, and transform variants
-- Back navigation: return to previous step with preserved input and cleanup handling
-- Transition notifications: subscribe to `transitionIn`, `ready`, and `transitionOut` events
-- React integration: `useWorkflow` via `useSyncExternalStore`
+## API Reference
 
-## Quick Start
+### Defining Steps
 
-```ts
-import z from 'zod/v4';
-import { workflow, step } from '@motif-ts/core';
+Use the `step` helper to create step definitions. These are "blueprints" or "classes" for your steps.
 
-// Define steps
-const A = step(
-  { kind: 'A', outputSchema: z.number() },
-  ({ transitionIn, transitionOut, effect, next }) => {
-    transitionIn(() => {
-      console.log('A in');
-      return () => console.log('A in cleanup');
-    });
-    transitionOut(() => {
-      console.log('A out');
-      return () => console.log('A out cleanup');
-    });
-    effect(() => {
-      console.log('A effect');
-      return () => console.log('A effect cleanup');
-    });
-    return { go: () => next(1) };
+```typescript
+import { step } from '@motif-ts/core';
+import z from 'zod';
+
+const MyStep = step(
+  {
+    kind: 'MyStep',
+    inputSchema: z.string(), // Input type validation
+    outputSchema: z.number(), // Output type validation
   },
+  ({ input, next, transitionIn, effect }) => {
+    // ... logic
+    return {
+      /* Public API exposed to UI */
+    };
+  }
 );
-
-const B = step(
-  { kind: 'B', inputSchema: z.number(), outputSchema: z.number() },
-  ({ transitionIn, input, next }) => {
-    transitionIn(() => {
-      console.log('B in', input);
-      return () => console.log('B in cleanup');
-    });
-    return { go: () => next(input + 1) };
-  },
-);
-
-// Create orchestrator with inventory of step creators
-const orchestrator = new workflow([A, B]);
-
-// Create step instances, register, connect, and start
-const a = A();
-const b = B();
-orchestrator.register([a, b]);
-orchestrator.connect(a, b); // bidirectional by default
-orchestrator.start(a); // A -> B via a.state.go()
-
-// Navigate back (B -> A)
-orchestrator.back();
 ```
 
 ## Lifecycle Hooks and Effects
@@ -156,17 +125,7 @@ const cur = orchestrator.getCurrentStep();
 unsub();
 ```
 
-## React Integration
 
-```ts
-import { useWorkflow } from '@motif-ts/react';
-
-function App({ orchestrator }: { orchestrator: workflow<[typeof S, typeof T]> }) {
-  const current = useWorkflow(orchestrator);
-  if (current.status !== 'ready') return null;
-  return <div>{String(current.state.count)}</div>;
-}
-```
 
 ## Step Variants and Build Args
 
@@ -177,7 +136,8 @@ function App({ orchestrator }: { orchestrator: workflow<[typeof S, typeof T]> })
 - `createStore` (optional)
 
 Build args include:
-- Always: `name`, `input`, `next`, `transitionIn`, `transitionOut`, `effect`
+- Always: `name`, `next`, `transitionIn`, `transitionOut`, `effect`
+- Plus `input` when `inputSchema` is present
 - Plus `config` when `configSchema` is present
 - Plus `store` when `createStore` is present
 
@@ -201,13 +161,4 @@ Build args include:
 - Hooks may be `async`, but cleanup functions must be returned synchronously
 - Works in Node and browsers; React integration is optional
 
-## DevTools Middleware
 
-Development tooling such as the Redux DevTools integration has moved to `@motif-ts/middleware`.
-
-```ts
-import { devtools } from '@motif-ts/middleware';
-import { workflow } from '@motif-ts/core';
-// Wrap your orchestrator to enable DevTools when available
-const orchestratorWithDevtools = devtools(workflow([/* ... */]));
-```
