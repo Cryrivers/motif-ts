@@ -80,10 +80,19 @@ export interface WorkflowAPI<Creators extends readonly StepCreatorAny[]> {
    */
   getCurrentStep(): CurrentStepStatus<Creators>;
   /**
-   * Subscribe to the current step.
-   * @param callback The callback to call when the current step changes.
+   * Subscribes to changes in the current step.
+   *
+   * @param handler - A function that is called whenever the current step changes.
+   * @returns A function to unsubscribe.
    */
-  subscribe(callback: (currentStep: CurrentStepStatus<Creators>, isWorkflowRunning: boolean) => void): () => void;
+  subscribe: (handler: (currentStep: CurrentStepStatus<Creators>, isWorkflowRunning: boolean) => void) => () => void;
+  /**
+   * Subscribes to the workflow finish event.
+   *
+   * @param handler - A function that is called when the workflow finishes.
+   * @returns A function to unsubscribe.
+   */
+  onFinish: (handler: (output: any) => void) => () => void;
   /**
    * Back to the previous step.
    */

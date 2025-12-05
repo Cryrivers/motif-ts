@@ -77,7 +77,7 @@ import { transformEdge } from '@motif-ts/core';
 orchestrator.connect(transformEdge(a, b, (out) => ({ username: out.name, years: out.age })));
 ```
 
-Forward transitions validate `output` via Zod (if provided) and select the first outgoing edge that allows the move. If none allow, an error is thrown (`'Transition blocked by edge condition'`). If there are no outgoing edges, `'No next step'` is thrown.
+- Forward transitions validate `output` via Zod (if provided) and select the first outgoing edge that allows the move. If none allow, an error is thrown (`'Transition blocked by edge condition'`). If there are no outgoing edges, the workflow finishes and triggers `onFinish` listeners.
 
 Back navigation re‑enters the previous step with its original input and executes previously collected `transitionOut` cleanups for that step. If the connecting edge is `unidirectional`, `back()` throws a clear error.
 
@@ -152,7 +152,7 @@ Build args include:
 
 - Zod validation errors surface when output or next input fails to parse
 - Conditional edges that block transitions throw `'Transition blocked by edge condition'`
-- Missing outgoing edges throw `'No next step'`
+- Missing outgoing edges trigger the workflow finish sequence.
 - `back()` throws when attempting to reverse a `unidirectional` edge
 - Hook/effect cleanups swallow errors to maintain flow
 

@@ -228,18 +228,22 @@ export default function InteractiveShowcase() {
         }
       });
 
+      const unsubFinish = yourWorkflow.onFinish(() => {
+        handleRestart();
+      });
+
       const firstStepId = activeSteps[0];
       if (firstStepId) {
         const firstInstance = instanceMap.get(firstStepId);
         yourWorkflow.start(firstInstance);
       }
 
-      return unsub;
+      return () => {
+        unsub();
+        unsubFinish();
+      };
     } catch (err: any) {
       console.error(err);
-      if (err.message && err.message.includes('No next step')) {
-        handleRestart();
-      }
     }
   };
 

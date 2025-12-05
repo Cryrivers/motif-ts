@@ -36,6 +36,7 @@ export function workflow<const Creators extends readonly StepCreatorAny[]>(inven
   const nodes = new Set<StepInstance<any, any, any, any, any>>();
   const edges: Edge<any, any>[] = [];
   const subscribers = new Set<(currentStep: CurrentStepStatus<Creators>, isWorkflowRunning: boolean) => void>();
+  const finishSubscribers = new Set<(output: any) => void>();
   const history: Array<{
     node: StepInstance<any, any, any, any, any>;
     input: unknown;
@@ -64,6 +65,13 @@ export function workflow<const Creators extends readonly StepCreatorAny[]>(inven
     subscribers.add(handler);
     return () => {
       subscribers.delete(handler);
+    };
+  };
+
+  const onFinish = (handler: (output: any) => void) => {
+    finishSubscribers.add(handler);
+    return () => {
+      finishSubscribers.delete(handler);
     };
   };
 
@@ -211,7 +219,8 @@ export function workflow<const Creators extends readonly StepCreatorAny[]>(inven
         // If there are no outgoing edges, end the workflow
         if (outgoing.length === 0) {
           runExitSequence();
-          throw new Error('No next step');
+          finish(output);
+          return;
         }
         // Try each outgoing edge and pick the first that allows transition
         let selectedEdge: Edge<any, any> | undefined;
@@ -302,7 +311,8 @@ export function workflow<const Creators extends readonly StepCreatorAny[]>(inven
       // If there are no outgoing edges, end the workflow
       if (outgoing.length === 0) {
         runExitSequence();
-        throw new Error('No next step');
+        finish(output);
+        return;
       }
       // Try each outgoing edge and pick the first that allows transition
       let selectedEdge: Edge<Output, any> | undefined;
@@ -395,16 +405,23 @@ export function workflow<const Creators extends readonly StepCreatorAny[]>(inven
     // Execute transitionIn once
     await runTransitionInOnce();
 
-    // Run initial effects (first render)
-    context.effects = processEffects(effectsDefs);
+    if (!context) {
+      return;
+    }
 
-    context.storeUnsub();
-    // Subscribe to data layer changes to rebuild on any change
-    context.storeUnsub = stepInstance.storeApi
-      ? stepInstance.storeApi.subscribe(() => {
-          rebuildCurrent();
-        })
-      : noop;
+    // Run initial effects (first render)
+    const activeEffects = processEffects(effectsDefs);
+
+    if (context) {
+      context.effects = activeEffects;
+      context.storeUnsub();
+      // Subscribe to data layer changes to rebuild on any change
+      context.storeUnsub = stepInstance.storeApi
+        ? stepInstance.storeApi.subscribe(() => {
+            rebuildCurrent();
+          })
+        : noop;
+    }
 
     // asynchronous transitionIn does not make it advance to next step, so
     // we need to rebuild current step to reflect the new state
@@ -543,6 +560,13 @@ export function workflow<const Creators extends readonly StepCreatorAny[]>(inven
     _internalStop();
   };
 
+  const finish = (output: any) => {
+    for (const cb of finishSubscribers) {
+      cb(output);
+    }
+    stop();
+  };
+
   const goBack = () => {
     const prev = history.pop();
     if (!prev) {
@@ -566,6 +590,7 @@ export function workflow<const Creators extends readonly StepCreatorAny[]>(inven
     connect,
     getCurrentStep,
     subscribe,
+    onFinish,
     goBack,
     start,
     stop,
