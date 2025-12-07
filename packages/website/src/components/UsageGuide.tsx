@@ -92,7 +92,7 @@ export function SignupForm() {
   ];
 
   return (
-    <section className="relative px-6 py-24" id="usage">
+    <section className="relative px-6 py-12 lg:py-24" id="usage">
       <div className="mx-auto max-w-7xl">
         <SectionHeading
           title="Detailed Usage Guide"

@@ -35,7 +35,7 @@ export default function InteractiveUsage({ blocks }: { blocks: CodeBlock[] }) {
   return (
     <div className="grid gap-8 lg:grid-cols-5">
       {/* Sidebar / Tabs */}
-      <div className="space-y-4 lg:col-span-2">
+      <div className="flex w-full gap-4 overflow-x-auto pb-4 lg:col-span-2 lg:block lg:space-y-4 lg:overflow-visible lg:pb-0">
         {blocks.map((block) => {
           const Icon = iconMap[block.iconName];
           const colors = colorMap[block.iconName];
@@ -46,13 +46,15 @@ export default function InteractiveUsage({ blocks }: { blocks: CodeBlock[] }) {
               key={block.value}
               onClick={() => setActiveTab(block.value)}
               className={cn(
-                'group flex w-full items-start gap-4 rounded-xl p-4 text-left transition-all duration-300',
-                isActive ? 'bg-white/5' : 'hover:bg-white/5',
+                'group flex min-w-[160px] shrink-0 items-center gap-3 rounded-xl p-3 text-left transition-all duration-300 lg:w-full lg:items-start lg:gap-4 lg:p-4',
+                isActive
+                  ? 'bg-white/10 lg:bg-white/5'
+                  : 'bg-white/5 hover:bg-white/10 lg:bg-transparent lg:hover:bg-white/5',
               )}
             >
               <div
                 className={cn(
-                  'mt-1 rounded-lg p-2 transition-colors',
+                  'rounded-lg p-2 transition-colors',
                   colors.bg,
                   colors.text,
                   isActive ? '' : 'opacity-80 group-hover:opacity-100',
@@ -62,11 +64,15 @@ export default function InteractiveUsage({ blocks }: { blocks: CodeBlock[] }) {
               </div>
               <div>
                 <h3
-                  className={cn('mb-1 font-semibold', isActive ? 'text-white' : 'text-gray-300 group-hover:text-white')}
+                  className={cn(
+                    'font-semibold',
+                    isActive ? 'text-white' : 'text-gray-300 group-hover:text-white',
+                    'lg:mb-1',
+                  )}
                 >
                   {block.label}
                 </h3>
-                <p className="text-sm leading-relaxed text-gray-500">{block.description}</p>
+                <p className="hidden text-sm leading-relaxed text-gray-500 lg:block">{block.description}</p>
               </div>
             </button>
           );
@@ -90,18 +96,20 @@ export default function InteractiveUsage({ blocks }: { blocks: CodeBlock[] }) {
           </div>
 
           {/* Code Content */}
-          <div className="relative flex-1 overflow-x-auto bg-[#0a0c10] p-6">
-            <AnimatePresence mode="wait">
-              <motion.div
-                key={activeTab}
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -10 }}
-                transition={{ duration: 0.2 }}
-                className="font-mono text-sm"
-                dangerouslySetInnerHTML={{ __html: activeBlock.codeHtml }}
-              />
-            </AnimatePresence>
+          <div className="relative w-full min-w-0 flex-1 overflow-hidden bg-[#0a0c10]">
+            <div className="custom-scrollbar absolute inset-0 overflow-auto p-6">
+              <AnimatePresence mode="wait">
+                <motion.div
+                  key={activeTab}
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -10 }}
+                  transition={{ duration: 0.2 }}
+                  className="font-mono text-sm [&_pre]:m-0! [&_pre]:bg-transparent!"
+                  dangerouslySetInnerHTML={{ __html: activeBlock.codeHtml }}
+                />
+              </AnimatePresence>
+            </div>
           </div>
         </GlassPanel>
       </div>

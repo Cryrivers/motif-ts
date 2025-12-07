@@ -1,6 +1,5 @@
 'use client';
 
-import { conditionalEdge } from '@motif-ts/core/edge/non-serializable';
 import { useIsWorkflowRunning } from '@motif-ts/react';
 import { Play, RotateCcw } from 'lucide-react';
 import { motion } from 'motion/react';
@@ -11,7 +10,6 @@ import 'reactflow/dist/style.css';
 
 import { cn } from '@/lib/cn';
 
-import Button from '../Button';
 import GlassPanel from '../GlassPanel';
 import MotifStepNode, { MotifStepData } from '../MotifStepNode';
 import SectionHeading from '../SectionHeading';
@@ -65,7 +63,7 @@ export default function InteractiveShowcase() {
   const [activeSteps, setActiveSteps] = useState<string[]>([]);
   const [nodes, setNodes, onNodesChange] = useNodesState([]);
   const [edges, setEdges, onEdgesChange] = useEdgesState([]);
-  const [useConditional, setUseConditional] = useState(false);
+
   const [errorShake, setErrorShake] = useState<string | null>(null);
 
   const [yourWorkflow, setYourWorkflow] = useState(initiateWorkflow);
@@ -138,12 +136,6 @@ export default function InteractiveShowcase() {
         markerEnd: { type: MarkerType.ArrowClosed, color: '#333' },
       };
 
-      if (useConditional && prevStepId === 'input' && stepId === 'verify') {
-        newEdge.label = 'valid?';
-        newEdge.style = { stroke: '#eab308' };
-        newEdge.markerEnd = { type: MarkerType.ArrowClosed, color: '#eab308' };
-      }
-
       setEdges((eds) => [...eds, newEdge]);
     }
   };
@@ -162,18 +154,17 @@ export default function InteractiveShowcase() {
         if (edge.source === 'input' && edge.target === 'verify') {
           return {
             ...edge,
-            label: useConditional ? 'valid?' : undefined,
-            style: { stroke: useConditional ? '#eab308' : '#333' },
+            style: { stroke: '#333' },
             markerEnd: {
               type: MarkerType.ArrowClosed,
-              color: useConditional ? '#eab308' : '#333',
+              color: '#333',
             },
           };
         }
         return edge;
       }),
     );
-  }, [useConditional, setEdges]);
+  }, [setEdges]);
 
   const runWorkflow = async () => {
     setNodes((nds) => nds.map((n) => ({ ...n, data: { ...n.data, status: 'idle' } })));
@@ -204,12 +195,7 @@ export default function InteractiveShowcase() {
         const nextId = activeSteps[i + 1];
         const current = instanceMap.get(currentId);
         const next = instanceMap.get(nextId);
-
-        if (useConditional && currentId === 'input') {
-          yourWorkflow.connect(conditionalEdge(current, next, () => true));
-        } else {
-          yourWorkflow.connect(current, next);
-        }
+        yourWorkflow.connect(current, next);
       }
 
       const unsub = yourWorkflow.subscribe((currentStep) => {
@@ -265,14 +251,12 @@ export default function InteractiveShowcase() {
       .slice(0, -1)
       .map((id, i) => {
         const nextId = activeSteps[i + 1];
-        if (useConditional && id === 'input' && nextId === 'verify') {
-          return `    .connect(conditionalEdge(${id}, ${nextId}, 'true'))`;
-        }
+
         return `    .connect(${id}, ${nextId})`;
       })
       .join('\n');
 
-    return `import { workflow, step, conditionalEdge } from '@motif-ts/core';
+    return `import { workflow, step } from '@motif-ts/core';
 
 // Your Workflow Definition
 ${stepDefs}
@@ -294,7 +278,7 @@ ${connections}
           description="Compose workflows visually or with code. motif-ts keeps them in sync."
         />
 
-        <div className="grid h-[1600px] gap-8 md:h-[850px] md:grid-cols-2">
+        <div className="grid h-[1400px] gap-8 md:h-[750px] md:grid-cols-2">
           {/* Visual Builder */}
           <GlassPanel className="relative flex flex-col overflow-hidden border-gray-800">
             <div className="absolute top-4 left-4 z-10 flex flex-wrap gap-2">
@@ -344,28 +328,6 @@ ${connections}
                 <Background color="#333" gap={20} size={1} />
               </ReactFlow>
             </div>
-
-            <div className="z-10 flex items-center justify-between border-t border-gray-800 bg-black/40 p-4 backdrop-blur-md">
-              <label className="flex cursor-pointer items-center gap-2 text-sm text-gray-400 transition-colors hover:text-white">
-                <input
-                  type="checkbox"
-                  checked={useConditional}
-                  onChange={(e) => setUseConditional(e.target.checked)}
-                  className="rounded border-gray-700 bg-gray-800 text-blue-500 focus:ring-blue-500"
-                />
-                Use Conditional Edge
-              </label>
-
-              <Button
-                onClick={runWorkflow}
-                disabled={activeSteps.length === 0 || isRunning}
-                variant="primary"
-                className={cn(activeSteps.length === 0 || isRunning ? 'bg-gray-800 text-gray-500' : '')}
-              >
-                <Play className="mr-2 h-4 w-4" />
-                {isRunning ? 'Running...' : 'Run Workflow'}
-              </Button>
-            </div>
           </GlassPanel>
 
           {/* Right Panel: Flip Card (Code vs Live Preview) */}
@@ -381,7 +343,12 @@ ${connections}
                 damping: 20,
               }}
             >
-              <YourCode generateCode={generateCode} />
+              <YourCode
+                generateCode={generateCode}
+                onRun={runWorkflow}
+                disabled={activeSteps.length === 0 || isRunning}
+                isRunning={isRunning}
+              />
               {isRunning ? <LivePreview workflow={yourWorkflow} handleRestart={handleRestart} /> : null}
             </motion.div>
           </div>

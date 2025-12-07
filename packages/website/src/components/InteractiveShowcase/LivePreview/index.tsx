@@ -5,6 +5,7 @@ import { ArrowLeft, BatteryFull, Smartphone, Square } from 'lucide-react';
 import { AnimatePresence } from 'motion/react';
 import { FC, useState } from 'react';
 
+import Button from '../../Button';
 import GlassPanel from '../../GlassPanel';
 import { InteractiveWorkflow } from '../utils';
 import { InputPage } from './InputPage';
@@ -39,13 +40,11 @@ const LivePreview: FC<{ workflow: InteractiveWorkflow; handleRestart: () => void
           <Smartphone className="h-4 w-4 text-blue-400" />
           Live Preview
         </div>
-        <button
-          onClick={handleRestart}
-          className="flex items-center gap-1.5 rounded bg-red-500/10 px-2.5 py-1.5 text-xs font-medium text-red-400 transition-colors hover:bg-red-500/20 hover:text-red-300"
-        >
-          <Square className="h-3 w-3 fill-current" />
+
+        <Button onClick={handleRestart} variant="danger" size="sm">
+          <Square className="mr-2 h-3 w-3 fill-current" />
           Stop Running
-        </button>
+        </Button>
       </div>
 
       <div className="relative flex flex-1 items-center justify-center bg-linear-to-br from-gray-900 to-black p-8">

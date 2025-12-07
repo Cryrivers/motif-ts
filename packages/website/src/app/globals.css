@@ -93,3 +93,8 @@ body {
 .custom-scrollbar::-webkit-scrollbar-thumb:hover {
   background: rgba(255, 255, 255, 0.2);
 }
+
+.custom-scrollbar::-webkit-scrollbar-corner {
+  background: rgba(10,10,10,1);
+}
+  

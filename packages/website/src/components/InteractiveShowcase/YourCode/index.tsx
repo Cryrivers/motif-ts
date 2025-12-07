@@ -1,9 +1,11 @@
 'use client';
 
-import { Code } from 'lucide-react';
+import { cn } from '@/lib/cn';
+import { Code, Play } from 'lucide-react';
 import { FC, useEffect, useRef, useState } from 'react';
 import { createHighlighter, Highlighter } from 'shiki';
 
+import Button from '../../Button';
 import GlassPanel from '../../GlassPanel';
 
 // --- Shiki Hook ---
@@ -56,7 +58,14 @@ const CodeBlock = ({ code }: { code: string }) => {
   );
 };
 
-const YourCode: FC<{ generateCode: () => string }> = ({ generateCode }) => {
+interface YourCodeProps {
+  generateCode: () => string;
+  onRun: () => void;
+  disabled: boolean;
+  isRunning: boolean;
+}
+
+const YourCode: FC<YourCodeProps> = ({ generateCode, onRun, disabled, isRunning }) => {
   /* Front Face: Generated Code */
 
   return (
@@ -64,9 +73,15 @@ const YourCode: FC<{ generateCode: () => string }> = ({ generateCode }) => {
       className="absolute inset-0 flex flex-col overflow-hidden border-gray-800 bg-[#0a0c10]"
       style={{ backfaceVisibility: 'hidden' }}
     >
-      <div className="flex items-center gap-2 border-b border-gray-800 bg-white/5 px-6 py-4 font-medium text-gray-500">
-        <Code className="h-4 w-4" />
-        Your Code
+      <div className="flex items-center justify-between border-b border-gray-800 bg-white/5 px-6 py-4 font-medium text-gray-500">
+        <div className="flex items-center gap-2">
+          <Code className="h-4 w-4" />
+          Your Code
+        </div>
+        <Button onClick={onRun} disabled={disabled} variant="primary" size="sm">
+          <Play className="mr-2 h-3 w-3 fill-current" />
+          {isRunning ? 'Running...' : 'Run Workflow'}
+        </Button>
       </div>
       <div className="flex-1 overflow-auto p-6">
         <CodeBlock code={generateCode()} />
