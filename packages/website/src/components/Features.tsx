@@ -50,12 +50,9 @@ const FEATURES = [
 
 export default function Features() {
   return (
-    <section id="features" className="relative px-6 py-24">
+    <section id="capabilities" className="relative px-6 py-20">
       <div className="mx-auto max-w-7xl">
-        <SectionHeading
-          title="Everything you need to drive workflows"
-          description="Powerful primitives for building complex application workflows with confidence."
-        />
+        <SectionHeading title="Core Capabilities" description="Essential primitives for complex application logic." />
 
         <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
           {FEATURES.map((feature, index) => (

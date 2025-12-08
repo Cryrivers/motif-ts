@@ -68,7 +68,7 @@ const PHILOSOPHY_ITEMS = [
 
 export default function Philosophy() {
   return (
-    <section id="philosophy" className="relative overflow-hidden px-6 py-24">
+    <section id="principles" className="relative overflow-hidden px-6 py-20">
       {/* Background Elements */}
       <div className="pointer-events-none absolute top-0 left-1/2 h-full w-full max-w-7xl -translate-x-1/2">
         <div className="absolute top-1/4 left-1/4 h-96 w-96 rounded-full bg-blue-500/5 blur-3xl" />
@@ -77,8 +77,8 @@ export default function Philosophy() {
 
       <div className="relative z-10 mx-auto max-w-7xl">
         <SectionHeading
-          title="Core Philosophy"
-          description="Built on first principles to solve the complexity of state management and workflow orchestration."
+          title="Design Principles"
+          description="Architected for predictability, type-safety, and separating concerns."
         />
 
         <div className="grid gap-6 md:grid-cols-2">

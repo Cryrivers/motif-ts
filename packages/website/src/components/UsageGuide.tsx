@@ -92,12 +92,9 @@ export function SignupForm() {
   ];
 
   return (
-    <section className="relative px-6 py-12 lg:py-24" id="usage">
+    <section className="relative px-6 py-12 lg:py-20" id="quick-start">
       <div className="mx-auto max-w-7xl">
-        <SectionHeading
-          title="Detailed Usage Guide"
-          description="Step-by-step instructions to get you up and running."
-        />
+        <SectionHeading title="Quick Start" description="From installation to your first workflow in minutes." />
         <InteractiveUsage blocks={blocks} />
       </div>
     </section>

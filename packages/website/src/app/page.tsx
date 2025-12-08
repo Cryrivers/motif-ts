@@ -1,3 +1,4 @@
+import CoreConcept from '../components/CoreConcept';
 import Features from '../components/Features';
 import InteractiveHero from '../components/InteractiveHero';
 import InteractiveShowcase from '../components/InteractiveShowcase';
@@ -10,6 +11,7 @@ export default function Page() {
       <InteractiveHero />
       <div className="relative z-10">
         <Philosophy />
+        <CoreConcept />
         <InteractiveShowcase />
         <Features />
         <UsageGuide />

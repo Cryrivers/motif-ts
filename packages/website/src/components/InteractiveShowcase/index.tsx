@@ -271,11 +271,11 @@ ${connections}
   };
 
   return (
-    <section className="relative px-6 py-24">
+    <section id="builder" className="relative px-6 py-20">
       <div className="mx-auto max-w-7xl">
         <SectionHeading
-          title="Build in Seconds"
-          description="Compose workflows visually or with code. motif-ts keeps them in sync."
+          title="Interactive Builder"
+          description="Visualize your logic. Sync code and graph instantly."
         />
 
         <div className="grid h-[1400px] gap-8 md:h-[750px] md:grid-cols-2">

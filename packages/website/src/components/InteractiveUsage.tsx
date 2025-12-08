@@ -5,7 +5,7 @@ import { Box, Code2, Layers, Terminal } from 'lucide-react';
 import { AnimatePresence, motion } from 'motion/react';
 import { useState } from 'react';
 
-import GlassPanel from './GlassPanel';
+import MacOSWindow from './MacOSWindow';
 
 type CodeBlock = {
   label: string;
@@ -81,20 +81,13 @@ export default function InteractiveUsage({ blocks }: { blocks: CodeBlock[] }) {
 
       {/* Code Window */}
       <div className="lg:col-span-3">
-        <GlassPanel className="flex h-full min-h-[400px] flex-col overflow-hidden border-gray-800">
-          {/* Window Header */}
-          <div className="flex items-center justify-between border-b border-gray-800 bg-black/20 px-4 py-3">
-            <div className="flex gap-2">
-              <div className="h-3 w-3 rounded-full border border-red-500/50 bg-red-500/20" />
-              <div className="h-3 w-3 rounded-full border border-yellow-500/50 bg-yellow-500/20" />
-              <div className="h-3 w-3 rounded-full border border-green-500/50 bg-green-500/20" />
-            </div>
-            <div className="font-mono text-xs text-gray-500">
-              {activeBlock.label.toLowerCase().replace(/\s+/g, '-')}.ts
-            </div>
-            <div className="w-12" /> {/* Spacer */}
-          </div>
-
+        <MacOSWindow
+          className="flex h-full min-h-[400px] flex-col overflow-hidden border-gray-800"
+          contentClassName="flex-1 flex flex-col min-h-0"
+          title={`${activeBlock.label.toLowerCase().replace(/\s+/g, '-')}.ts`}
+          variant="glass"
+          headerClassName="bg-black/20 border-gray-800"
+        >
           {/* Code Content */}
           <div className="relative w-full min-w-0 flex-1 overflow-hidden bg-[#0a0c10]">
             <div className="custom-scrollbar absolute inset-0 overflow-auto p-6">
@@ -111,7 +104,7 @@ export default function InteractiveUsage({ blocks }: { blocks: CodeBlock[] }) {
               </AnimatePresence>
             </div>
           </div>
-        </GlassPanel>
+        </MacOSWindow>
       </div>
     </div>
   );

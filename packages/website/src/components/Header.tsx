@@ -18,14 +18,17 @@ export default function Header() {
         </Link>
 
         <nav className="flex items-center gap-6">
-          <Link href="#philosophy" className="text-sm font-medium text-gray-400 transition-colors hover:text-white">
-            Philosophy
+          <Link href="#principles" className="text-sm font-medium text-gray-400 transition-colors hover:text-white">
+            Design Principles
           </Link>
-          <Link href="#features" className="text-sm font-medium text-gray-400 transition-colors hover:text-white">
-            Features
+          <Link href="#architecture" className="text-sm font-medium text-gray-400 transition-colors hover:text-white">
+            Architecture
           </Link>
-          <Link href="#usage" className="text-sm font-medium text-gray-400 transition-colors hover:text-white">
-            Usage
+          <Link href="#capabilities" className="text-sm font-medium text-gray-400 transition-colors hover:text-white">
+            Core Capabilities
+          </Link>
+          <Link href="#quick-start" className="text-sm font-medium text-gray-400 transition-colors hover:text-white">
+            Quick Start
           </Link>
 
           <div className="hidden h-4 w-px bg-white/10 md:block" />
