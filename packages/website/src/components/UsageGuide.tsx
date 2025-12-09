@@ -1,7 +1,7 @@
 import { highlight } from '@/lib/shiki';
 
 import InteractiveUsage from './InteractiveUsage';
-import SectionHeading from './SectionHeading';
+import Section from './Section';
 
 export default async function UsageGuide() {
   const installCode = `pnpm add @motif-ts/core @motif-ts/react`;
@@ -92,11 +92,13 @@ export function SignupForm() {
   ];
 
   return (
-    <section className="relative px-6 py-12 lg:py-20" id="quick-start">
-      <div className="mx-auto max-w-7xl">
-        <SectionHeading title="Quick Start" description="From installation to your first workflow in minutes." />
-        <InteractiveUsage blocks={blocks} />
-      </div>
-    </section>
+    <Section
+      id="quick-start"
+      title="Quick Start"
+      description="From installation to your first workflow in minutes."
+      className="py-12 lg:py-20"
+    >
+      <InteractiveUsage blocks={blocks} />
+    </Section>
   );
 }

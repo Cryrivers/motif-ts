@@ -373,9 +373,11 @@ export default function InteractiveHero() {
           transition={{ duration: 0.8, delay: 0.4 }}
           className="flex justify-center gap-4"
         >
-          <Button variant="glass" size="lg" className="group rounded-full px-8 py-3">
-            Get Started <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
-          </Button>
+          <a href="https://github.com/Cryrivers/motif-ts" target="_blank" rel="noopener noreferrer">
+            <Button variant="glass" size="lg" className="group rounded-full px-8 py-3">
+              Get Started <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
+            </Button>
+          </a>
         </motion.div>
       </div>
 

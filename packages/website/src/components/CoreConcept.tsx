@@ -54,7 +54,7 @@ export default function CoreConcept() {
                   className={cn(
                     'relative z-10 min-w-[260px] rounded-[22px] border bg-[#0A0A0A] p-6 backdrop-blur-sm transition-all duration-500',
                     activePart === 'step'
-                      ? 'border-sky-500 ring-1 ring-sky-500/50 bg-sky-500/10 shadow-[0_0_30px_-10px_rgba(14,165,233,0.3)]'
+                      ? 'border-sky-500 bg-sky-500/10 shadow-[0_0_30px_-10px_rgba(14,165,233,0.3)] ring-1 ring-sky-500/50'
                       : 'border-white/10 shadow-xl shadow-black/50',
                   )}
                   onMouseEnter={() => setActivePart('step')}
@@ -167,14 +167,12 @@ export default function CoreConcept() {
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
                     exit={{ opacity: 0 }}
-                    className="flex flex-col items-center text-center text-gray-500 text-balance px-4"
+                    className="flex flex-col items-center px-4 text-center text-balance text-gray-500"
                   >
-                    <p className="text-sm font-medium text-gray-300">
-                      Interactive Step Architecture
-                    </p>
+                    <p className="text-sm font-medium text-gray-300">Interactive Step Architecture</p>
                     <p className="mt-2 text-xs leading-relaxed opacity-60">
-                      Hover to reveal the seamless link between visual concepts and TypeScript code.
-                      See how every Input, State, and Output is strictly typed and interconnected.
+                      Hover to reveal the seamless link between visual concepts and TypeScript code. See how every
+                      Input, State, and Output is strictly typed and interconnected.
                     </p>
                   </motion.div>
                 )}
@@ -281,7 +279,8 @@ export default function CoreConcept() {
                       className="text-[#FFB757]"
                     >
                       transitionIn
-                    </CodeToken>,{' '}
+                    </CodeToken>
+                    ,{' '}
                     <CodeToken
                       active={activePart === 'step'}
                       hoverId="step"
@@ -298,7 +297,8 @@ export default function CoreConcept() {
                       className="text-[#FFB757]"
                     >
                       transitionOut
-                    </CodeToken>,{' '}
+                    </CodeToken>
+                    ,{' '}
                     <CodeToken
                       active={activePart === 'output'}
                       hoverId="output"
@@ -326,7 +326,8 @@ export default function CoreConcept() {
                       </CodeToken>
                       <div className="pl-4">
                         <CodeToken active={activePart === 'store'} hoverId="store" setHover={setActivePart}>
-                          <span className="text-[#91CBFF]">store</span>.<span className="text-[#d2a8ff]">increment</span>
+                          <span className="text-[#91CBFF]">store</span>.
+                          <span className="text-[#d2a8ff]">increment</span>
                           ();
                         </CodeToken>
                       </div>
@@ -534,7 +535,7 @@ function ConceptNode({
         'focus:outline-none focus-visible:ring-2 focus-visible:ring-sky-500/70 focus-visible:ring-offset-2 focus-visible:ring-offset-background',
         active ? 'z-20 scale-105' : 'border-white/10 hover:border-white/20 hover:bg-white/5',
         className,
-        active && (id && NODE_STYLES[id] || 'border-current bg-background shadow-[0_0_20px_-5px_currentColor]'),
+        active && ((id && NODE_STYLES[id]) || 'border-current bg-background shadow-[0_0_20px_-5px_currentColor]'),
       )}
       onMouseEnter={() => onHover(id)}
       onMouseLeave={() => onHover(null)}
@@ -589,10 +590,13 @@ function CodeToken({
       role="button"
       aria-pressed={active}
       className={cn(
-        '-mx-1.5 cursor-pointer rounded border border-transparent px-1.5 transition-all duration-200 whitespace-pre',
+        '-mx-1.5 cursor-pointer rounded border border-transparent px-1.5 whitespace-pre transition-all duration-200',
         'focus:outline-none focus-visible:ring-2 focus-visible:ring-sky-500/70 focus-visible:ring-offset-1 focus-visible:ring-offset-[#0A0A0A]',
         active
-          ? cn('shadow-[0_0_15px_-3px_currentColor]', (hoverId && TOKEN_STYLES[hoverId]) || 'border-white/20 bg-white/10 shadow-white/20')
+          ? cn(
+              'shadow-[0_0_15px_-3px_currentColor]',
+              (hoverId && TOKEN_STYLES[hoverId]) || 'border-white/20 bg-white/10 shadow-white/20',
+            )
           : 'text-inherit hover:bg-white/5',
         className,
       )}

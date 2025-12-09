@@ -31,7 +31,12 @@ export default function Footer() {
                 Documentation
               </a>
             </div>
-            <div className="text-xs text-gray-500">MIT License • © {new Date().getFullYear()} Zhongliang Wang</div>
+            <div className="text-xs text-gray-500">
+              MIT License • © {new Date().getFullYear()}{' '}
+              <a href="https://zhongliang.wang" target="_blank" rel="noopener noreferrer">
+                Zhongliang Wang
+              </a>
+            </div>
           </div>
         </div>
       </div>

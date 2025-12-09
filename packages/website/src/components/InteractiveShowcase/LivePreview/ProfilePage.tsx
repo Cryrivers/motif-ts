@@ -1,8 +1,7 @@
 import { ChevronRight, User } from 'lucide-react';
-import { motion } from 'motion/react';
 
 import Button from '../../Button';
-import { slideVariants } from './animation';
+import { SlidePage } from './SlidePage';
 
 interface ProfilePageProps {
   onSubmit: (name: string, role: string) => void;
@@ -11,15 +10,7 @@ interface ProfilePageProps {
 
 export function ProfilePage({ onSubmit, custom }: ProfilePageProps) {
   return (
-    <motion.div
-      key="profile"
-      custom={custom}
-      variants={slideVariants}
-      initial="enter"
-      animate="center"
-      exit="exit"
-      className="absolute inset-0 flex flex-col justify-center bg-linear-to-b from-gray-900 to-black p-6"
-    >
+    <SlidePage pageKey="profile" custom={custom} className="justify-center bg-linear-to-b from-gray-900 to-black p-6">
       <div className="mb-8 flex h-16 w-16 items-center justify-center rounded-2xl bg-linear-to-tr from-purple-600 to-pink-600 shadow-lg shadow-purple-500/20">
         <User className="h-8 w-8 text-white" />
       </div>
@@ -59,6 +50,6 @@ export function ProfilePage({ onSubmit, custom }: ProfilePageProps) {
           Next <ChevronRight className="ml-2 h-4 w-4" />
         </Button>
       </form>
-    </motion.div>
+    </SlidePage>
   );
 }

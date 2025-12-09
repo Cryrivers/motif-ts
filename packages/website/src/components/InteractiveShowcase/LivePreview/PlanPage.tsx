@@ -1,8 +1,7 @@
 import { ChevronRight, CreditCard } from 'lucide-react';
-import { motion } from 'motion/react';
 
 import Button from '../../Button';
-import { slideVariants } from './animation';
+import { SlidePage } from './SlidePage';
 
 interface PlanPageProps {
   onSelect: (plan: string) => void;
@@ -11,15 +10,7 @@ interface PlanPageProps {
 
 export function PlanPage({ onSelect, custom }: PlanPageProps) {
   return (
-    <motion.div
-      key="plan"
-      custom={custom}
-      variants={slideVariants}
-      initial="enter"
-      animate="center"
-      exit="exit"
-      className="absolute inset-0 flex flex-col justify-center bg-linear-to-b from-gray-900 to-black p-6"
-    >
+    <SlidePage pageKey="plan" custom={custom} className="justify-center bg-linear-to-b from-gray-900 to-black p-6">
       <div className="mb-8 flex h-16 w-16 items-center justify-center rounded-2xl bg-linear-to-tr from-green-600 to-teal-600 shadow-lg shadow-green-500/20">
         <CreditCard className="h-8 w-8 text-white" />
       </div>
@@ -39,6 +30,6 @@ export function PlanPage({ onSelect, custom }: PlanPageProps) {
           </Button>
         ))}
       </div>
-    </motion.div>
+    </SlidePage>
   );
 }

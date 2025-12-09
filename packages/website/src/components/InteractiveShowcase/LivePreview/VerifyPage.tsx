@@ -1,7 +1,4 @@
-import { Loader2 } from 'lucide-react';
-import { motion } from 'motion/react';
-
-import { slideVariants } from './animation';
+import { SlidePage } from './SlidePage';
 
 export function VerifyPage({
   timeLeft,
@@ -21,15 +18,7 @@ export function VerifyPage({
   const dashOffset = (1 - fraction) * circumference;
 
   return (
-    <motion.div
-      key="verify"
-      custom={custom}
-      variants={slideVariants}
-      initial="enter"
-      animate="center"
-      exit="exit"
-      className="absolute inset-0 flex flex-col items-center justify-center bg-black p-6 text-center"
-    >
+    <SlidePage pageKey="verify" custom={custom} className="items-center justify-center bg-black p-6 text-center">
       <div className="relative mb-8">
         {/* Background Circle */}
         <div className="absolute inset-0 rounded-full bg-blue-500/20 blur-xl" />
@@ -71,6 +60,6 @@ export function VerifyPage({
       >
         {isActive ? 'Checking...' : 'Start Verification'}
       </button>
-    </motion.div>
+    </SlidePage>
   );
 }

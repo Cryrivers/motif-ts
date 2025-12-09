@@ -1,8 +1,7 @@
 import { ChevronRight, Mail } from 'lucide-react';
-import { motion } from 'motion/react';
 
 import Button from '../../Button';
-import { slideVariants } from './animation';
+import { SlidePage } from './SlidePage';
 
 interface InputPageProps {
   onSubmit: (email: string) => void;
@@ -11,15 +10,7 @@ interface InputPageProps {
 
 export function InputPage({ onSubmit, custom }: InputPageProps) {
   return (
-    <motion.div
-      key="input"
-      custom={custom}
-      variants={slideVariants}
-      initial="enter"
-      animate="center"
-      exit="exit"
-      className="absolute inset-0 flex flex-col justify-center bg-linear-to-b from-gray-900 to-black p-6"
-    >
+    <SlidePage pageKey="input" custom={custom} className="justify-center bg-linear-to-b from-gray-900 to-black p-6">
       <div className="mb-8 flex h-16 w-16 items-center justify-center rounded-2xl bg-linear-to-tr from-blue-600 to-purple-600 shadow-lg shadow-blue-500/20">
         <Mail className="h-8 w-8 text-white" />
       </div>
@@ -49,6 +40,6 @@ export function InputPage({ onSubmit, custom }: InputPageProps) {
           Continue <ChevronRight className="ml-2 h-4 w-4" />
         </Button>
       </form>
-    </motion.div>
+    </SlidePage>
   );
 }
