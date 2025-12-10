@@ -53,7 +53,7 @@ export default function Features() {
     <Section
       id="capabilities"
       title="Core Capabilities"
-      description="Essential primitives for complex application logic."
+      description="Essential primitives for building robust, scalable workflows."
     >
       <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
         {FEATURES.map((feature, index) => (

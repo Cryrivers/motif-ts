@@ -273,40 +273,47 @@ ${connections}
   return (
     <Section
       id="builder"
-      title="Interactive Builder"
-      description="Visualize your logic. Sync code and graph instantly."
+      title="Workflow in Motion"
+      description="Compose steps into a graph and inspect state transitions in real-time."
     >
-      <div className="grid h-[1400px] gap-8 md:h-[750px] md:grid-cols-2">
+      <div className="grid min-h-[600px] gap-8 md:h-[750px] md:grid-cols-2">
         {/* Visual Builder */}
-        <GlassPanel className="relative flex flex-col overflow-hidden border-gray-800">
-          <div className="absolute top-4 left-4 z-10 flex flex-wrap gap-2">
-            {STEPS_INFO.map((step) => (
-              <motion.button
-                key={step.id}
-                onClick={() => addStep(step.id)}
-                disabled={activeSteps.includes(step.id)}
-                animate={errorShake === step.id ? { x: [0, -8, 8, -8, 8, 0] } : {}}
-                transition={{ duration: 0.4 }}
-                className={cn('rounded-full border px-3 py-1 text-sm backdrop-blur-md transition-all', {
-                  'border-red-500 bg-red-500/20 text-red-400': errorShake === step.id,
-                  'cursor-not-allowed border-gray-700 bg-gray-800/50 text-gray-500':
-                    activeSteps.includes(step.id) && errorShake !== step.id,
-                  'border-blue-500/50 bg-blue-500/10 text-blue-400 hover:bg-blue-500/20':
-                    !activeSteps.includes(step.id) && errorShake !== step.id,
-                })}
-              >
-                + {step.label}
-              </motion.button>
-            ))}
-            {activeSteps.length > 0 && (
-              <button
-                onClick={resetBuilder}
-                className="rounded-full border border-red-500/50 bg-red-500/10 p-1.5 text-red-400 transition-colors hover:bg-red-500/20"
-                title="Reset"
-              >
-                <RotateCcw className="h-4 w-4" />
-              </button>
-            )}
+        <GlassPanel className="relative flex min-h-[350px] flex-col overflow-hidden border-gray-800 md:min-h-0">
+          {/* Scrollable step buttons container */}
+          <div className="absolute top-4 right-0 left-4 z-10">
+            <div className="relative">
+              {/* Gradient fade on right edge to indicate more content */}
+              <div className="pointer-events-none absolute top-0 right-0 bottom-0 z-10 w-8 bg-linear-to-l from-black/80 to-transparent md:hidden" />
+              <div className="scrollbar-none flex gap-2 overflow-x-auto pr-8 pb-2 md:flex-wrap md:pr-4">
+                {STEPS_INFO.map((step) => (
+                  <motion.button
+                    key={step.id}
+                    onClick={() => addStep(step.id)}
+                    disabled={activeSteps.includes(step.id)}
+                    animate={errorShake === step.id ? { x: [0, -8, 8, -8, 8, 0] } : {}}
+                    transition={{ duration: 0.4 }}
+                    className={cn('shrink-0 rounded-full border px-3 py-1 text-sm backdrop-blur-md transition-all', {
+                      'border-red-500 bg-red-500/20 text-red-400': errorShake === step.id,
+                      'cursor-not-allowed border-gray-700 bg-gray-800/50 text-gray-500':
+                        activeSteps.includes(step.id) && errorShake !== step.id,
+                      'border-blue-500/50 bg-blue-500/10 text-blue-400 hover:bg-blue-500/20':
+                        !activeSteps.includes(step.id) && errorShake !== step.id,
+                    })}
+                  >
+                    + {step.label}
+                  </motion.button>
+                ))}
+                {activeSteps.length > 0 && (
+                  <button
+                    onClick={resetBuilder}
+                    className="shrink-0 rounded-full border border-red-500/50 bg-red-500/10 p-1.5 text-red-400 transition-colors hover:bg-red-500/20"
+                    title="Reset"
+                  >
+                    <RotateCcw className="h-4 w-4" />
+                  </button>
+                )}
+              </div>
+            </div>
           </div>
 
           <div className="relative flex-1 bg-[#0a0c10]">
@@ -329,7 +336,7 @@ ${connections}
         </GlassPanel>
 
         {/* Right Panel: Flip Card (Code vs Live Preview) */}
-        <div className="group relative h-full" style={{ perspective: '1000px' }}>
+        <div className="group relative h-full min-h-[750px]" style={{ perspective: '1000px' }}>
           <motion.div
             className="relative h-full w-full"
             style={{ transformStyle: 'preserve-3d' }}

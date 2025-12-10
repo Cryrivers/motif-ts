@@ -78,7 +78,7 @@ export default function Philosophy() {
       <div className="relative z-10 mx-auto max-w-7xl">
         <SectionHeading
           title="Design Principles"
-          description="Architected for predictability, type-safety, and separating concerns."
+          description="Built on the foundations of immutability, type-safety, and composition."
         />
 
         <div className="grid gap-6 md:grid-cols-2">

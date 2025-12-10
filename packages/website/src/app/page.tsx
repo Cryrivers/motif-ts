@@ -9,13 +9,13 @@ export default function Page() {
   return (
     <main className="min-h-screen bg-background">
       <InteractiveHero />
-      <div className="relative z-10">
+      
         <Philosophy />
         <CoreConcept />
         <InteractiveShowcase />
         <Features />
         <UsageGuide />
-      </div>
+      
     </main>
   );
 }

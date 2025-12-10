@@ -98,7 +98,7 @@ export default function InteractiveUsage({ blocks }: { blocks: CodeBlock[] }) {
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: -10 }}
                   transition={{ duration: 0.2 }}
-                  className="font-mono text-sm [&_pre]:m-0! [&_pre]:bg-transparent!"
+                  className="font-mono text-xs md:text-sm [&_pre]:m-0! [&_pre]:bg-transparent!"
                   dangerouslySetInnerHTML={{ __html: activeBlock.codeHtml }}
                 />
               </AnimatePresence>

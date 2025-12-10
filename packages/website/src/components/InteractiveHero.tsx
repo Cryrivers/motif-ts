@@ -347,7 +347,7 @@ export default function InteractiveHero() {
       {/* Background Grid */}
       <div className="grid-bg pointer-events-none absolute inset-0 z-0" />
 
-      <div className="z-10 mb-10 max-w-3xl px-4 text-center">
+      <div className="mb-10 max-w-3xl px-4 text-center">
         <motion.h1
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -381,12 +381,12 @@ export default function InteractiveHero() {
         </motion.div>
       </div>
 
-      {/* Interactive Graph Container */}
+      {/* Interactive Graph Container - Hidden on mobile */}
       <motion.div
         initial={{ opacity: 0, scale: 0.9 }}
         animate={{ opacity: 1, scale: 1 }}
         transition={{ duration: 1, delay: 0.5 }}
-        className="relative h-[500px] w-full max-w-6xl"
+        className="relative hidden h-[500px] w-full max-w-6xl md:block"
       >
         <GlassPanel className="h-full w-full overflow-hidden border-gray-800 shadow-2xl">
           <ReactFlow
@@ -415,6 +415,24 @@ export default function InteractiveHero() {
           <div className={cn('h-2 w-2 rounded-full', isRunning ? 'animate-pulse bg-green-500' : 'bg-gray-500')} />
           {isRunning ? 'Workflow Running...' : 'Idle'}
         </div>
+      </motion.div>
+
+      {/* Mobile: Simplified workflow visualization */}
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.8, delay: 0.5 }}
+        className="mx-4 block md:hidden"
+      >
+        <GlassPanel className="border-gray-800 p-6 text-center">
+          <div className="mb-4 flex items-center justify-center gap-2">
+            <div className={cn('h-2 w-2 rounded-full', isRunning ? 'animate-pulse bg-green-500' : 'bg-gray-500')} />
+            <span className="text-sm text-gray-400">{isRunning ? 'Workflow Running...' : 'Interactive Demo'}</span>
+          </div>
+          <p className="text-sm leading-relaxed text-gray-500">
+            Explore the full interactive workflow diagram on a larger screen.
+          </p>
+        </GlassPanel>
       </motion.div>
     </section>
   );

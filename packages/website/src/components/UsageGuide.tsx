@@ -95,7 +95,7 @@ export function SignupForm() {
     <Section
       id="quick-start"
       title="Quick Start"
-      description="From installation to your first workflow in minutes."
+      description="From installation to your first executable workflow."
       className="py-12 lg:py-20"
     >
       <InteractiveUsage blocks={blocks} />

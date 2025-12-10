@@ -18,14 +18,17 @@ export default function CoreConcept() {
   const isOutputArrowActive = activePart === 'step' || activePart === 'output';
 
   return (
-    <section className="relative overflow-hidden bg-background px-6 py-32 selection:bg-sky-500/20">
+    <section id="concept" className="relative overflow-hidden bg-background px-6 py-32 selection:bg-sky-500/20">
       {/* Subtle Grid Background */}
       <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] mask-[radial-gradient(ellipse_60%_50%_at_50%_0%,#000_70%,transparent_100%)] bg-size-[24px_24px]" />
 
       <div className="relative z-10 mx-auto max-w-7xl">
-        <SectionHeading title="Core Concept" description="The Anatomy of a Step" />
+        <SectionHeading
+          title="The Step Model"
+          description="Encapsulated logic with strict IO boundaries and reactive state."
+        />
 
-        <div className="mt-20 grid gap-16 lg:grid-cols-2">
+        <div className="mt-20 grid items-start gap-16 lg:grid-cols-2">
           {/* Left Column: Diagram + Details */}
           <div className="flex flex-col gap-12">
             {/* Diagram Area - Flexbox Layout (Vertical Mobile, Horizontal Desktop) */}
@@ -188,7 +191,7 @@ export default function CoreConcept() {
               className="group relative shadow-2xl"
               headerClassName="![&>div:last-child]:hidden"
             >
-              <div className="scrollbar-none overflow-x-auto p-5 font-mono text-[13px] leading-7 text-gray-400 selection:bg-white/10">
+              <div className="scrollbar-none overflow-x-auto p-5 font-mono text-[11px] leading-7 text-gray-400 selection:bg-white/10 md:text-[13px]">
                 {/* Definition */}
                 <div className="mb-6">
                   <span className="text-[#8b949e] italic">// 1. Define Step</span>
@@ -357,7 +360,7 @@ export default function CoreConcept() {
                   </div>
                   <div className="mt-1">
                     <CodeToken active={activePart === 'api'} hoverId="api" setHover={setActivePart}>
-                      <span className="text-[#91CBFF]">instance</span>.<span className="text-[#d2a8ff]">execute</span>
+                      <span className="text-[#91CBFF]">instance</span>.state.<span className="text-[#d2a8ff]">execute</span>
                       ();
                     </CodeToken>
                   </div>
