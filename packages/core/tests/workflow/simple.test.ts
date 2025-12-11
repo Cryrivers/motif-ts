@@ -2,7 +2,7 @@ import { assert, describe, expect, it } from 'vitest';
 import z from 'zod/v4';
 import { type StateCreator } from 'zustand/vanilla';
 
-import { step, workflow } from '../src';
+import { step, workflow } from '../../src';
 
 // This suite converts the strict-typed-demo example into deterministic tests.
 // It covers positive, negative, and edge scenarios, including Zod validation errors.

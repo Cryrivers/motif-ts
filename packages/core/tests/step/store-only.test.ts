@@ -2,7 +2,7 @@ import { assert, describe, expect, it } from 'vitest';
 import z from 'zod/v4';
 import { type StateCreator } from 'zustand/vanilla';
 
-import { step, workflow } from '../src';
+import { step, workflow } from '../../src';
 
 // Combination (c): no configSchema, with createStore
 // Ensures build args include `store` and no `config`, and runtime store works.

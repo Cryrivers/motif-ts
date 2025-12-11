@@ -86,7 +86,7 @@ export function workflow<const Creators extends readonly StepCreatorAny[]>(inven
     notify(currentStep);
   };
 
-  const runTransitionInOnce = async () => {
+  const runTransitionInOnce = () => {
     if (!context || context.hasRunIn) {
       return;
     }
@@ -101,20 +101,21 @@ export function workflow<const Creators extends readonly StepCreatorAny[]>(inven
       if (typeof result === 'function') {
         context.inCleanups.push(result);
       } else if (isPromise<CleanupFn>(result)) {
-        try {
-          const cleanup = await result;
-          if (typeof cleanup !== 'function') {
-            return;
-          }
-          // If context is still current, register; otherwise, invoke immediately
-          if (context && context.version === version) {
-            context.inCleanups.push(cleanup);
-          } else {
-            safeInvokeCleanup(cleanup);
-          }
-        } catch (err) {
-          handleAsyncError(err, 'transitionIn', i);
-        }
+        result
+          .then((cleanup) => {
+            if (typeof cleanup !== 'function') {
+              return;
+            }
+            // If context is still current, register; otherwise, invoke immediately
+            if (context && context.version === version) {
+              context.inCleanups.push(cleanup);
+            } else {
+              safeInvokeCleanup(cleanup);
+            }
+          })
+          .catch((err) => {
+            handleAsyncError(err, 'transitionIn', i);
+          });
       }
     }
     context.hasRunIn = true;
@@ -403,7 +404,7 @@ export function workflow<const Creators extends readonly StepCreatorAny[]>(inven
     }
 
     // Execute transitionIn once
-    await runTransitionInOnce();
+    runTransitionInOnce();
 
     if (!context) {
       return;

@@ -33,7 +33,7 @@ export default function Header() {
     <>
       <header
         className={cn(
-          'fixed top-0 z-50 border-b w-full border-white/10 transition-colors duration-300',
+          'fixed top-0 z-50 w-full border-b border-white/10 transition-colors duration-300',
           isMobileMenuOpen ? 'bg-black' : 'bg-black/50 backdrop-blur-md supports-backdrop-filter:bg-black/20',
         )}
       >

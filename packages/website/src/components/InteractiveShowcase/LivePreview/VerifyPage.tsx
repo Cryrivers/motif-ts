@@ -1,19 +1,7 @@
 import { SlidePage } from './SlidePage';
 
-export function VerifyPage({
-  timeLeft,
-  maxTime,
-  isActive,
-  onStart,
-  custom,
-}: {
-  timeLeft: number;
-  maxTime: number;
-  isActive: boolean;
-  onStart: () => void;
-  custom: number;
-}) {
-  const fraction = isActive ? Math.max(0, timeLeft / maxTime) : 1;
+export function VerifyPage({ timeLeft, maxTime, custom }: { timeLeft: number; maxTime: number; custom: number }) {
+  const fraction = Math.max(0, timeLeft / maxTime);
   const circumference = 2 * Math.PI * 24; // r=24
   const dashOffset = (1 - fraction) * circumference;
 
@@ -41,25 +29,13 @@ export function VerifyPage({
           </svg>
 
           {/* Center Content */}
-          <div className="flex items-center justify-center font-mono text-xl font-bold text-white">
-            {isActive ? timeLeft : maxTime}s
-          </div>
+          <div className="flex items-center justify-center font-mono text-xl font-bold text-white">{timeLeft}s</div>
         </div>
       </div>
 
-      <h3 className="mb-2 font-semibold text-white">{isActive ? 'Verifying...' : 'Identity Check'}</h3>
+      <h3 className="mb-2 font-semibold text-white">Verifying...</h3>
 
-      <p className="mb-8 text-xs tracking-wider text-gray-500 uppercase">
-        {isActive ? 'Please wait' : 'Secure Connection'}
-      </p>
-
-      <button
-        onClick={onStart}
-        disabled={isActive}
-        className="rounded-full bg-blue-600 px-6 py-2 text-sm font-medium text-white transition-all hover:bg-blue-500 disabled:cursor-not-allowed disabled:opacity-50"
-      >
-        {isActive ? 'Checking...' : 'Start Verification'}
-      </button>
+      <p className="mb-8 text-xs tracking-wider text-gray-500 uppercase">Please wait</p>
     </SlidePage>
   );
 }

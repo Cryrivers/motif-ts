@@ -1,7 +1,7 @@
 import { assert, describe, expect, it, vi } from 'vitest';
 import { z } from 'zod'; // Import zod
 
-import { step, workflow } from '../src';
+import { step, workflow } from '../../src';
 
 // Step A: Input step. Starts with no input, exposes 'submit' API to trigger next.
 const StepA = step(

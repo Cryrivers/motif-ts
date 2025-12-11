@@ -360,7 +360,8 @@ export default function CoreConcept() {
                   </div>
                   <div className="mt-1">
                     <CodeToken active={activePart === 'api'} hoverId="api" setHover={setActivePart}>
-                      <span className="text-[#91CBFF]">instance</span>.state.<span className="text-[#d2a8ff]">execute</span>
+                      <span className="text-[#91CBFF]">instance</span>.state.
+                      <span className="text-[#d2a8ff]">execute</span>
                       ();
                     </CodeToken>
                   </div>

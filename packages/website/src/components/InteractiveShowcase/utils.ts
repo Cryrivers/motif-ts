@@ -17,19 +17,21 @@ export const InputStep = step(
 );
 
 interface VerifyState {
-  isActive: boolean;
   timeLeft: number;
   maxTime: number;
   decrement: () => void;
-  start: () => void;
+  reset: () => void;
 }
 
-const verifyStore: StateCreator<VerifyState> = (set) => ({
-  isActive: false,
+const initialState = {
   timeLeft: 3,
   maxTime: 3,
+};
+
+const verifyStore: StateCreator<VerifyState> = (set) => ({
+  ...initialState,
   decrement: () => set((s) => ({ timeLeft: Math.max(0, s.timeLeft - 1) })),
-  start: () => set({ isActive: true }),
+  reset: () => set(initialState),
 });
 
 export const VerifyStep = step(
@@ -42,28 +44,30 @@ export const VerifyStep = step(
       noHistory: true,
     },
   },
-  ({ next, input, store, effect }) => {
+  ({ next, input, store, effect, transitionOut }) => {
+    // Reset store to initial state when transitioning out
+    transitionOut(() => {
+      store.reset();
+    });
     // Effect: Handle countdown interval
     effect(() => {
       let interval: NodeJS.Timeout;
-      if (store.isActive && store.timeLeft > 0) {
+      if (store.timeLeft > 0) {
         interval = setInterval(() => store.decrement(), 1000);
       }
       return () => clearInterval(interval);
-    }, [store.isActive]); // Re-run when active state changes
+    }, [store.timeLeft]); // Re-run when active state changes
 
     // Effect: Auto-advance when time reaches 0
     effect(() => {
-      if (store.isActive && store.timeLeft === 0) {
+      if (store.timeLeft === 0) {
         next({ ...input, isVerified: true });
       }
-    }, [store.timeLeft, store.isActive]);
+    }, [store.timeLeft]);
 
     return {
       timeLeft: store.timeLeft,
       maxTime: store.maxTime,
-      isActive: store.isActive,
-      start: store.start,
     };
   },
 );

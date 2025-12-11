@@ -1,7 +1,7 @@
 import { assert, describe, expect, it } from 'vitest';
 import z from 'zod/v4';
 
-import { step, workflow } from '../src';
+import { step, workflow } from '../../src';
 
 function delay(ms: number) {
   return new Promise((resolve) => setTimeout(resolve, ms));

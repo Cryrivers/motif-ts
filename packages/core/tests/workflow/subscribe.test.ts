@@ -2,7 +2,7 @@ import { assert, describe, expect, it } from 'vitest';
 import z from 'zod/v4';
 import { type StateCreator } from 'zustand/vanilla';
 
-import { step, workflow } from '../src';
+import { step, workflow } from '../../src';
 
 describe('Workflow.subscribe notifications', () => {
   const sStore: StateCreator<{ n: number; inc: () => void }> = (set) => ({

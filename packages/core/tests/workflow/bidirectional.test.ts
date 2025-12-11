@@ -1,7 +1,7 @@
 import { assert, describe, expect, it } from 'vitest';
 import z from 'zod/v4';
 
-import { step as Step, workflow } from '../src';
+import { step as Step, workflow } from '../../src';
 
 describe('motif-ts Workflow bidirectional transitions and cleanup', () => {
   it('supports forward and backward transitions with proper cleanup timing', () => {

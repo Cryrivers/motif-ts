@@ -78,8 +78,6 @@ const LivePreview: FC<{ workflow: InteractiveWorkflow; handleRestart: () => void
                 <VerifyPage
                   timeLeft={current.state.timeLeft}
                   maxTime={current.state.maxTime}
-                  isActive={current.state.isActive}
-                  onStart={current.state.start}
                   custom={navState.direction}
                 />
               )}

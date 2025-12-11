@@ -1,8 +1,7 @@
 import { assert, describe, expect, it, vi } from 'vitest';
-import z from 'zod';
 import { type StateCreator } from 'zustand/vanilla';
 
-import { step, workflow } from '../src';
+import { step, workflow } from '../../src';
 
 describe('effects', () => {
   const storeCreator: StateCreator<{ count: number; inc: () => void }> = (set) => ({
