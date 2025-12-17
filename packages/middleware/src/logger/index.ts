@@ -11,6 +11,7 @@ export type LoggerOptions = {
       | 'Back'
       | 'Pause'
       | 'Resume'
+      | 'Finish'
       | 'TransitionIn'
       | 'Ready'
       | 'TransitionOut'
@@ -27,6 +28,7 @@ const defaultPalette = {
   Back: '#64748b',
   Pause: '#f59e0b',
   Resume: '#10b981',
+  Finish: '#8b5cf6',
   TransitionIn: '#f59e0b',
   Ready: '#10b981',
   TransitionOut: '#ef4444',
@@ -42,7 +44,7 @@ export default function loggerMiddleware<const Creators extends readonly StepCre
   workflow: WorkflowAPI<Creators>,
   options: LoggerOptions = {},
 ): WorkflowAPI<Creators> {
-  const { connect, getCurrentStep, subscribe, goBack, stop, pause, resume, $$INTERNAL } = workflow;
+  const { connect, getCurrentStep, subscribe, onFinish, goBack, stop, pause, resume, $$INTERNAL } = workflow;
 
   const prefix = options.prefix ?? '[motif] ';
   const palette = options.palette;
@@ -87,6 +89,12 @@ export default function loggerMiddleware<const Creators extends readonly StepCre
     },
     getCurrentStep,
     subscribe,
+    onFinish(handler: (output: any) => void) {
+      return onFinish((output) => {
+        log('Finish', { output });
+        handler(output);
+      });
+    },
     goBack() {
       log('Back');
       return goBack();
