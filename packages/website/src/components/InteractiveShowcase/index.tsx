@@ -1,9 +1,9 @@
 'use client';
 
 import { useIsWorkflowRunning } from '@motif-ts/react';
-import { Play, RotateCcw } from 'lucide-react';
+import { RotateCcw } from 'lucide-react';
 import { motion } from 'motion/react';
-import { useEffect, useState } from 'react';
+import { Activity, useEffect, useState } from 'react';
 import ReactFlow, { Background, Edge, MarkerType, Node, useEdgesState, useNodesState } from 'reactflow';
 
 import 'reactflow/dist/style.css';
@@ -348,13 +348,17 @@ ${connections}
               damping: 20,
             }}
           >
-            <YourCode
-              generateCode={generateCode}
-              onRun={runWorkflow}
-              disabled={activeSteps.length === 0 || isRunning}
-              isRunning={isRunning}
-            />
-            {isRunning ? <LivePreview workflow={yourWorkflow} handleRestart={handleRestart} /> : null}
+            <Activity mode={isRunning ? 'hidden' : 'visible'}>
+              <YourCode
+                generateCode={generateCode}
+                onRun={runWorkflow}
+                disabled={activeSteps.length === 0 || isRunning}
+                isRunning={isRunning}
+              />
+            </Activity>
+            <Activity mode={isRunning ? 'visible' : 'hidden'}>
+              <LivePreview workflow={yourWorkflow} handleRestart={handleRestart} />
+            </Activity>
           </motion.div>
         </div>
       </div>
