@@ -28,8 +28,8 @@ export default function devtoolsMiddleware<const Creators extends readonly StepC
 
   const edgeInventoryMap = new Map<string, DeserializableEdgeFunc>([
     ['default', edge],
-    ['conditional', conditionalEdge],
-    ['transform', transformEdge],
+    ['conditional-serializable', conditionalEdge],
+    ['transform-serializable', transformEdge],
   ]);
 
   // wire import/export handlers from separate module

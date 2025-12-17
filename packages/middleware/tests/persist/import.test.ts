@@ -16,10 +16,10 @@ describe('Import workflow - basic and full', () => {
       format: 'motif-ts/basic',
       schemaVersion: WORKFLOW_EXPORT_SCHEMA_VERSION,
       nodes: [
-        { id: 'A_a', kind: 'A', name: 'a', config: undefined },
-        { id: 'B_b', kind: 'B', name: 'b', config: undefined },
+        { id: 'A:a', kind: 'A', name: 'a', config: undefined },
+        { id: 'B:b', kind: 'B', name: 'b', config: undefined },
       ],
-      edges: [{ kind: 'default', from: 'A_a', to: 'B_b', unidirectional: false, config: null }],
+      edges: [{ kind: 'default', from: 'A:a', to: 'B:b', unidirectional: false, config: null }],
     };
 
     wf.importWorkflow('basic', importPayload);
@@ -39,14 +39,14 @@ describe('Import workflow - basic and full', () => {
       format: 'motif-ts/full',
       schemaVersion: WORKFLOW_EXPORT_SCHEMA_VERSION,
       nodes: [
-        { id: 'S_s', kind: 'S', name: 's', config: undefined },
-        { id: 'T_t', kind: 'T', name: 't', config: undefined },
+        { id: 'S:s', kind: 'S', name: 's', config: undefined },
+        { id: 'T:t', kind: 'T', name: 't', config: undefined },
       ],
-      edges: [{ kind: 'default', from: 'S_s', to: 'T_t', unidirectional: false, config: null }],
+      edges: [{ kind: 'default', from: 'S:s', to: 'T:t', unidirectional: false, config: null }],
       state: {
-        current: { nodeId: 'S_s', status: 'ready', input: undefined },
-        history: [{ nodeId: 'S_s', input: undefined }],
-        stores: { S_s: { v: 123 } },
+        current: { nodeId: 'S:s', status: 'ready', input: undefined },
+        history: [{ nodeId: 'S:s', input: undefined }],
+        stores: { 'S:s': { v: 123 } },
       },
     };
 
@@ -62,7 +62,7 @@ describe('Import workflow - basic and full', () => {
       format: 'motif-ts/basic',
       // @ts-expect-error
       schemaVersion: '0.0.1',
-      nodes: [{ id: 'A_a', kind: 'A', name: 'a' }],
+      nodes: [{ id: 'A:a', kind: 'A', name: 'a' }],
       edges: [],
     };
     expect(() => wf.importWorkflow('basic', badPayload)).toThrow();
@@ -74,8 +74,8 @@ describe('Import workflow - basic and full', () => {
     const badPayload: z.infer<typeof SchemaBasic> = {
       format: 'motif-ts/basic',
       schemaVersion: WORKFLOW_EXPORT_SCHEMA_VERSION,
-      nodes: [{ id: 'A_a', kind: 'A', name: 'a' }],
-      edges: [{ kind: 'default', from: 'A_a', to: 'B_b', unidirectional: false }],
+      nodes: [{ id: 'A:a', kind: 'A', name: 'a' }],
+      edges: [{ kind: 'default', from: 'A:a', to: 'B:b', unidirectional: false }],
     };
     expect(() => wf.importWorkflow('basic', badPayload)).toThrow();
   });

@@ -34,10 +34,22 @@ describe('Import/Export with edge kinds and expressions', () => {
     const basic = wf.exportWorkflow('basic');
     // Validate that edges carry kind and expr correctly
     expect(basic.edges).toEqual([
-      { kind: 'conditional', from: emitter.id, to: even.id, unidirectional: false, config: 'out % 2 === 0' },
-      { kind: 'conditional', from: emitter.id, to: odd.id, unidirectional: false, config: 'out % 2 !== 0' },
       {
-        kind: 'transform',
+        kind: 'conditional-serializable',
+        from: emitter.id,
+        to: even.id,
+        unidirectional: false,
+        config: 'out % 2 === 0',
+      },
+      {
+        kind: 'conditional-serializable',
+        from: emitter.id,
+        to: odd.id,
+        unidirectional: false,
+        config: 'out % 2 !== 0',
+      },
+      {
+        kind: 'transform-serializable',
         from: a.id,
         to: b.id,
         unidirectional: false,
@@ -62,19 +74,25 @@ describe('Import/Export with edge kinds and expressions', () => {
       format: 'motif-ts/basic' as const,
       schemaVersion: WORKFLOW_EXPORT_SCHEMA_VERSION,
       nodes: [
-        { id: 'Emitter_emitter', kind: 'Emitter', name: 'emitter' },
-        { id: 'Even_even', kind: 'Even', name: 'even' },
-        { id: 'Odd_odd', kind: 'Odd', name: 'odd' },
+        { id: 'Emitter:emitter', kind: 'Emitter', name: 'emitter' },
+        { id: 'Even:even', kind: 'Even', name: 'even' },
+        { id: 'Odd:odd', kind: 'Odd', name: 'odd' },
       ],
       edges: [
         {
-          kind: 'conditional',
-          from: 'Emitter_emitter',
-          to: 'Even_even',
+          kind: 'conditional-serializable',
+          from: 'Emitter:emitter',
+          to: 'Even:even',
           unidirectional: false,
           config: 'out % 2 === 0',
         },
-        { kind: 'conditional', from: 'Emitter_emitter', to: 'Odd_odd', unidirectional: false, config: 'out % 2 !== 0' },
+        {
+          kind: 'conditional-serializable',
+          from: 'Emitter:emitter',
+          to: 'Odd:odd',
+          unidirectional: false,
+          config: 'out % 2 !== 0',
+        },
       ],
     };
 

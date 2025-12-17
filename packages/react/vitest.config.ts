@@ -1,22 +1,8 @@
-import { defineConfig } from 'vitest/config';
+import { createVitestConfig } from '../../vitest.config.base';
 
-export default defineConfig({
+export default createVitestConfig({
   test: {
-    environment: 'node',
+    // React package only includes .ts files (no .js)
     include: ['tests/**/*.ts'],
-    exclude: ['node_modules/**', 'dist/**'],
-    coverage: {
-      provider: 'v8',
-      // Focus coverage on library source; exclude examples and tests themselves
-      include: ['src/**/*.ts'],
-      exclude: ['tests/**'],
-      // Enforce minimum coverage thresholds
-      thresholds: {
-        lines: 80,
-        statements: 80,
-        functions: 80,
-        branches: 70,
-      },
-    },
   },
 });

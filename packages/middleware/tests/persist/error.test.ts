@@ -41,10 +41,10 @@ describe('Error handling and edge cases', () => {
       format: 'motif-ts/basic',
       schemaVersion: WORKFLOW_EXPORT_SCHEMA_VERSION,
       nodes: [
-        { id: 'A_a', kind: 'A', name: 'a' },
-        { id: 'B_b', kind: 'B', name: 'b' },
+        { id: 'A:a', kind: 'A', name: 'a' },
+        { id: 'B:b', kind: 'B', name: 'b' },
       ],
-      edges: [{ kind: 'default', from: 'A_a', to: 'B_b', unidirectional: false }],
+      edges: [{ kind: 'default', from: 'A:a', to: 'B:b', unidirectional: false }],
     };
 
     // Attempt import and ensure rollback works
@@ -60,7 +60,7 @@ describe('Error handling and edge cases', () => {
     const payload: z.infer<typeof SchemaBasic> = {
       format: 'motif-ts/basic',
       schemaVersion: WORKFLOW_EXPORT_SCHEMA_VERSION,
-      nodes: [{ id: 'A_a', kind: 'A', name: 'a' }],
+      nodes: [{ id: 'A:a', kind: 'A', name: 'a' }],
       edges: [],
     };
     wf.importWorkflow('basic', payload);

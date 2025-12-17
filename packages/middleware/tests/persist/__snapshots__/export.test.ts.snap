@@ -5,9 +5,9 @@ exports[`Export workflow - basic and full > exports basic configuration with nod
   "edges": [
     {
       "config": null,
-      "from": "A_a",
+      "from": "A:a",
       "kind": "default",
-      "to": "B_b",
+      "to": "B:b",
       "unidirectional": false,
     },
   ],
@@ -15,13 +15,13 @@ exports[`Export workflow - basic and full > exports basic configuration with nod
   "nodes": [
     {
       "config": undefined,
-      "id": "A_a",
+      "id": "A:a",
       "kind": "A",
       "name": "a",
     },
     {
       "config": undefined,
-      "id": "B_b",
+      "id": "B:b",
       "kind": "B",
       "name": "b",
     },
@@ -35,9 +35,9 @@ exports[`Export workflow - basic and full > exports full state including current
   "edges": [
     {
       "config": null,
-      "from": "S_s",
+      "from": "S:s",
       "kind": "default",
-      "to": "T_t",
+      "to": "T:t",
       "unidirectional": false,
     },
   ],
@@ -47,13 +47,13 @@ exports[`Export workflow - basic and full > exports full state including current
       "config": {
         "v": 42,
       },
-      "id": "S_s",
+      "id": "S:s",
       "kind": "S",
       "name": "s",
     },
     {
       "config": undefined,
-      "id": "T_t",
+      "id": "T:t",
       "kind": "T",
       "name": "t",
     },
@@ -62,40 +62,15 @@ exports[`Export workflow - basic and full > exports full state including current
   "state": {
     "current": {
       "input": undefined,
-      "nodeId": "S_s",
+      "nodeId": "S:s",
       "status": "ready",
     },
     "history": [],
     "stores": {
-      "S_s": {
+      "S:s": {
         "v": 0,
       },
     },
-  },
-}
-`;
-
-exports[`Export workflow - basic and full > exports when not started (no current node) > full-export-not-started 1`] = `
-{
-  "edges": [],
-  "format": "motif-ts/full",
-  "nodes": [
-    {
-      "config": undefined,
-      "id": "A_a",
-      "kind": "A",
-      "name": "a",
-    },
-  ],
-  "schemaVersion": "1.0.0",
-  "state": {
-    "current": {
-      "input": undefined,
-      "nodeId": null,
-      "status": "notStarted",
-    },
-    "history": [],
-    "stores": {},
   },
 }
 `;

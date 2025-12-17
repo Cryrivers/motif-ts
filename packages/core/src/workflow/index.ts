@@ -30,6 +30,65 @@ function computeCanGoBack(
   return !!prev && (!connecting || !connecting.unidirectional);
 }
 
+/**
+ * Shared transition logic for the next() callback.
+ * Handles output validation, edge selection, and state transitions.
+ */
+function executeNextTransition<Output>(
+  node: StepInstance<any, Output, any, any, any>,
+  nodeInput: unknown,
+  output: Output,
+  edges: Edge<any, any>[],
+  history: Array<{ node: StepInstance<any, any, any, any, any>; input: unknown; outCleanupOnBack: CleanupFn[] }>,
+  runExitSequence: () => CleanupFnArray,
+  finish: (output: any) => void,
+  transitionInto: (
+    node: StepInstance<any, any, any, any, any>,
+    input: any,
+    isBack: boolean,
+    backCleanups: CleanupFn[],
+  ) => void,
+) {
+  const validatedOutput = node.outputSchema ? node.outputSchema.parse(output) : undefined;
+  const outgoing = edges.filter((e) => e.from === node);
+
+  // If there are no outgoing edges, end the workflow
+  if (outgoing.length === 0) {
+    runExitSequence();
+    finish(output);
+    return;
+  }
+
+  // Try each outgoing edge and pick the first that allows transition
+  let selectedEdge: Edge<any, any> | undefined;
+  let nextInput: unknown = undefined;
+  for (const e of outgoing) {
+    const res = e.validateTransition(validatedOutput);
+    if (res.allow) {
+      selectedEdge = e;
+      nextInput = res.nextInput;
+      break;
+    }
+  }
+
+  if (!selectedEdge) {
+    runExitSequence();
+    throw new Error('Transition blocked by edge condition');
+  }
+
+  const nextNode = selectedEdge.to;
+  if (nextNode.inputSchema) {
+    nextInput = nextNode.inputSchema.parse(nextInput);
+  }
+
+  const prevOutCleanups = runExitSequence();
+  if (!node.options?.noHistory) {
+    history.push({ node, input: nodeInput, outCleanupOnBack: prevOutCleanups });
+  }
+
+  transitionInto(nextNode, nextInput, false, []);
+}
+
 export function workflow<const Creators extends readonly StepCreatorAny[]>(inventory: Creators): WorkflowAPI<Creators> {
   // #region No need to be serialized for time-traveling
   const stepInventoryMap: Map<string, StepCreatorAny> = new Map();
@@ -132,10 +191,6 @@ export function workflow<const Creators extends readonly StepCreatorAny[]>(inven
         currentStep.status === 'ready' || currentStep.status === 'transitionIn',
         'currentStep.status must be ready or transitionIn',
       );
-      _ASSERT(
-        currentStep.instance.name === currentStep.instance.name,
-        'currentStep.stepCreator.name must be currentStep.stepCreator.name',
-      );
       setCurrentStep({
         ...currentStep,
         status: 'transitionOut',
@@ -213,40 +268,7 @@ export function workflow<const Creators extends readonly StepCreatorAny[]>(inven
       ...(node.configSchema ? { config: node.config } : {}),
       ...(node.storeApi ? { store: node.storeApi.getState() } : {}),
       next: (output) => {
-        // same as line 288
-        // fixme: refactor
-        const validatedOutput = node.outputSchema ? node.outputSchema.parse(output) : undefined;
-        const outgoing = edges.filter((e) => e.from === node);
-        // If there are no outgoing edges, end the workflow
-        if (outgoing.length === 0) {
-          runExitSequence();
-          finish(output);
-          return;
-        }
-        // Try each outgoing edge and pick the first that allows transition
-        let selectedEdge: Edge<any, any> | undefined;
-        let nextInput = undefined;
-        for (const e of outgoing) {
-          const res = e.validateTransition(validatedOutput);
-          if (res.allow) {
-            selectedEdge = e;
-            nextInput = res.nextInput;
-            break;
-          }
-        }
-        if (!selectedEdge) {
-          runExitSequence();
-          throw new Error('Transition blocked by edge condition');
-        }
-        const nextNode = selectedEdge.to;
-        if (nextNode.inputSchema) {
-          nextInput = nextNode.inputSchema.parse(nextInput);
-        }
-        const prevOutCleanups = runExitSequence();
-        if (!node.options?.noHistory) {
-          history.push({ node, input: inputForNode, outCleanupOnBack: prevOutCleanups });
-        }
-        transitionInto(nextNode, nextInput, false, []);
+        executeNextTransition(node, inputForNode, output, edges, history, runExitSequence, finish, transitionInto);
       },
     };
     const api = node.build(args);
@@ -307,38 +329,7 @@ export function workflow<const Creators extends readonly StepCreatorAny[]>(inven
     const effectsDefs: EffectDef[] = [];
 
     const next = (output: Output) => {
-      const validatedOutput = stepInstance.outputSchema ? stepInstance.outputSchema.parse(output) : undefined;
-      const outgoing = edges.filter((e) => e.from === stepInstance);
-      // If there are no outgoing edges, end the workflow
-      if (outgoing.length === 0) {
-        runExitSequence();
-        finish(output);
-        return;
-      }
-      // Try each outgoing edge and pick the first that allows transition
-      let selectedEdge: Edge<Output, any> | undefined;
-      let nextInput = undefined;
-      for (const e of outgoing) {
-        const res = e.validateTransition(validatedOutput);
-        if (res.allow) {
-          selectedEdge = e as Edge<Output, any>;
-          nextInput = res.nextInput;
-          break;
-        }
-      }
-      if (!selectedEdge) {
-        runExitSequence();
-        throw new Error('Transition blocked by edge condition');
-      }
-      const nextNode = selectedEdge.to;
-      if (nextNode.inputSchema) {
-        nextInput = nextNode.inputSchema.parse(nextInput);
-      }
-      const prevOutCleanups = runExitSequence();
-      if (!stepInstance.options?.noHistory) {
-        history.push({ node: stepInstance, input, outCleanupOnBack: prevOutCleanups });
-      }
-      transitionInto(nextNode, nextInput, false, []);
+      executeNextTransition(stepInstance, input, output, edges, history, runExitSequence, finish, transitionInto);
     };
 
     const args: any = {

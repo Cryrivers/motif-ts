@@ -71,10 +71,22 @@ describe('Export workflow - basic and full', () => {
 
     const basic = wf.exportWorkflow('basic');
     expect(basic.edges).toEqual([
-      { kind: 'conditional', from: emitter.id, to: even.id, unidirectional: false, config: 'out % 2 === 0' },
-      { kind: 'conditional', from: emitter.id, to: odd.id, unidirectional: false, config: 'out % 2 !== 0' },
       {
-        kind: 'transform',
+        kind: 'conditional-serializable',
+        from: emitter.id,
+        to: even.id,
+        unidirectional: false,
+        config: 'out % 2 === 0',
+      },
+      {
+        kind: 'conditional-serializable',
+        from: emitter.id,
+        to: odd.id,
+        unidirectional: false,
+        config: 'out % 2 !== 0',
+      },
+      {
+        kind: 'transform-serializable',
         from: a.id,
         to: b.id,
         unidirectional: false,

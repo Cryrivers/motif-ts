@@ -1,4 +1,7 @@
 /**
+ * Shared Prettier configuration for motif-ts monorepo.
+ * This configuration is automatically discovered by Prettier for all packages.
+ *
  * @see https://prettier.io/docs/configuration
  * @type {import('prettier').Config & import('@ianvs/prettier-plugin-sort-imports').PluginConfig}
  */

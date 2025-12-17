@@ -10,6 +10,7 @@
     "type-check": "turbo run type-check"
   },
   "devDependencies": {
+    "@ianvs/prettier-plugin-sort-imports": "^4.7.0",
     "pnpm": "^10.20.0",
     "turbo": "^2.6.3"
   },
