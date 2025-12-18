@@ -104,8 +104,8 @@ describe('composeMiddleware', () => {
     expect(typeof enhanced.connect).toBe('function');
     expect(typeof enhanced.start).toBe('function');
     expect(typeof enhanced.getCurrentStep).toBe('function');
-    expect(typeof enhanced.subscribe).toBe('function');
-    expect(typeof enhanced.onFinish).toBe('function');
+    expect(typeof enhanced.subscribeStepChange).toBe('function');
+    expect(typeof enhanced.subscribeWorkflowFinish).toBe('function');
     expect(typeof enhanced.goBack).toBe('function');
     expect(typeof enhanced.stop).toBe('function');
   });

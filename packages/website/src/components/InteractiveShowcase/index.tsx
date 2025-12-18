@@ -198,7 +198,7 @@ export default function InteractiveShowcase() {
         yourWorkflow.connect(current, next);
       }
 
-      const unsub = yourWorkflow.subscribe((currentStep) => {
+      const unsub = yourWorkflow.subscribeStepChange((currentStep) => {
         const { kind, status } = currentStep;
         if (status === 'transitionIn' || status === 'ready' || status === 'transitionOut') {
           // Update status for the current node, and reset others to idle
@@ -214,7 +214,7 @@ export default function InteractiveShowcase() {
         }
       });
 
-      const unsubFinish = yourWorkflow.onFinish(() => {
+      const unsubFinish = yourWorkflow.subscribeWorkflowFinish(() => {
         handleRestart();
       });
 

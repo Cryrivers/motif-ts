@@ -55,7 +55,7 @@ describe('Workflow.subscribe notifications', () => {
     orchestrator.register(s);
 
     const events: Array<{ kind: string; name: string; status: string }> = [];
-    orchestrator.subscribe((currentStep) => {
+    orchestrator.subscribeStepChange((currentStep) => {
       events.push({ kind: currentStep.kind, name: currentStep.name, status: currentStep.status });
     });
 
@@ -75,7 +75,7 @@ describe('Workflow.subscribe notifications', () => {
     orchestrator.connect(s, t);
 
     const events: Array<{ kind: string; name: string; status: string }> = [];
-    orchestrator.subscribe((currentStep) => {
+    orchestrator.subscribeStepChange((currentStep) => {
       events.push({ kind: currentStep.kind, name: currentStep.name, status: currentStep.status });
     });
 
@@ -99,7 +99,7 @@ describe('Workflow.subscribe notifications', () => {
     orchestrator.register(s);
 
     const events: Array<{ kind: string; name: string; status: string }> = [];
-    orchestrator.subscribe((currentStep) => {
+    orchestrator.subscribeStepChange((currentStep) => {
       events.push({ kind: currentStep.kind, name: currentStep.name, status: currentStep.status });
     });
 
@@ -130,7 +130,7 @@ describe('Workflow.subscribe notifications', () => {
     orchestrator.connect(s, t);
 
     const events: Array<{ kind: string; name: string; status: string }> = [];
-    orchestrator.subscribe((currentStep) => {
+    orchestrator.subscribeStepChange((currentStep) => {
       events.push({ kind: currentStep.kind, name: currentStep.name, status: currentStep.status });
     });
 

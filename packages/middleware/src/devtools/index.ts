@@ -25,7 +25,7 @@ export default function devtoolsMiddleware<const Creators extends readonly StepC
 ): WorkflowAPI<Creators> {
   const {
     getCurrentStep,
-    subscribe,
+    subscribeStepChange,
     pause,
     $$INTERNAL: { nodes, transitionInto, getCurrentNode, getContext, history },
   } = workflow;
@@ -147,7 +147,7 @@ export default function devtoolsMiddleware<const Creators extends readonly StepC
   });
 
   // Track runtime status changes
-  subscribe((currentStep, isWorkflowRunning) => {
+  subscribeStepChange((currentStep, isWorkflowRunning) => {
     if (!isWorkflowRunning) {
       return;
     }

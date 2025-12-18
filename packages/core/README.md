@@ -77,7 +77,7 @@ import { transformEdge } from '@motif-ts/core';
 orchestrator.connect(transformEdge(a, b, (out) => ({ username: out.name, years: out.age })));
 ```
 
-- Forward transitions validate `output` via Zod (if provided) and select the first outgoing edge that allows the move. If none allow, an error is thrown (`'Transition blocked by edge condition'`). If there are no outgoing edges, the workflow finishes and triggers `onFinish` listeners.
+- Forward transitions validate `output` via Zod (if provided) and select the first outgoing edge that allows the move. If none allow, an error is thrown (`'Transition blocked by edge condition'`). If there are no outgoing edges, the workflow finishes and triggers `subscribeWorkflowFinish` listeners.
 
 Back navigation re‑enters the previous step with its original input and executes previously collected `transitionOut` cleanups for that step. If the connecting edge is `unidirectional`, `back()` throws a clear error.
 
@@ -114,7 +114,7 @@ Subscribe to transitions and read current step state:
 
 ```ts
 const events: Array<{ kind: string; name: string; status: string }> = [];
-const unsub = orchestrator.subscribe((kind, name, status) => {
+const unsub = orchestrator.subscribeStepChange((kind, name, status) => {
   events.push({ kind, name, status });
 });
 

@@ -33,7 +33,7 @@ const StepB = step(
 );
 
 describe('Workflow Finish Logic', () => {
-  it('should trigger onFinish when workflow completes', async () => {
+  it('should trigger subscribeWorkflowFinish when workflow completes', async () => {
     const stepA = StepA();
     const stepB = StepB();
     const flow = workflow([StepA, StepB]);
@@ -42,7 +42,7 @@ describe('Workflow Finish Logic', () => {
     flow.connect(stepA, stepB);
 
     const finishSpy = vi.fn();
-    flow.onFinish(finishSpy);
+    flow.subscribeWorkflowFinish(finishSpy);
 
     flow.start(stepA);
 
@@ -66,7 +66,7 @@ describe('Workflow Finish Logic', () => {
     // No connection from stepA, so it should finish immediately after A completes
 
     const finishSpy = vi.fn();
-    flow.onFinish(finishSpy);
+    flow.subscribeWorkflowFinish(finishSpy);
 
     flow.start(stepA);
     const current = flow.getCurrentStep();
@@ -83,7 +83,7 @@ describe('Workflow Finish Logic', () => {
     expect(flow.getCurrentStep).toThrow(); // Should throw because currentStep is undefined
   });
 
-  it('should support multiple onFinish subscribers', async () => {
+  it('should support multiple subscribeWorkflowFinish subscribers', async () => {
     const stepA = StepA();
     const flow = workflow([StepA]);
     flow.register([stepA]);
@@ -91,8 +91,8 @@ describe('Workflow Finish Logic', () => {
     const spy1 = vi.fn();
     const spy2 = vi.fn();
 
-    flow.onFinish(spy1);
-    flow.onFinish(spy2);
+    flow.subscribeWorkflowFinish(spy1);
+    flow.subscribeWorkflowFinish(spy2);
 
     flow.start(stepA);
     flow.getCurrentStep().state.submit(0);

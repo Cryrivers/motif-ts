@@ -1,7 +1,7 @@
 /**
- * Type-level test for onFinish output type inference.
+ * Type-level test for subscribeWorkflowFinish output type inference.
  * This file tests that the TypeScript compiler correctly infers
- * the output type of onFinish based on terminal nodes.
+ * the output type of subscribeWorkflowFinish based on terminal nodes.
  */
 import { z } from 'zod/v4';
 
@@ -56,8 +56,8 @@ function testSingleTerminal() {
 
   const wf = workflow([StepA, StepB, StepC]).register([a, b, c]).connect(a, b).connect(b, c);
 
-  // onFinish should infer { success: boolean; message: string }
-  wf.onFinish((output) => {
+  // subscribeWorkflowFinish should infer { success: boolean; message: string }
+  wf.subscribeWorkflowFinish((output) => {
     // Type assertion - if this compiles, the type inference works
     const _success: boolean = output.success;
     const _message: string = output.message;
@@ -69,7 +69,7 @@ function testSingleTerminal() {
 // ======= Test 2: Multiple terminal nodes =======
 // A -> B (B is terminal)
 // A -> C (C is terminal)
-// onFinish output should be union of B and C outputs
+// subscribeWorkflowFinish output should be union of B and C outputs
 function testMultipleTerminals() {
   const a = StepA();
   const b = StepB();
@@ -77,8 +77,8 @@ function testMultipleTerminals() {
 
   const wf = workflow([StepA, StepB, StepC]).register([a, b, c]).connect(a, b).connect(a, c);
 
-  // onFinish output is union: { email: string; verified: boolean } | { success: boolean; message: string }
-  wf.onFinish((output) => {
+  // subscribeWorkflowFinish output is union: { email: string; verified: boolean } | { success: boolean; message: string }
+  wf.subscribeWorkflowFinish((output) => {
     // Both types should be valid since it's a union
     if ('verified' in output) {
       const _email: string = output.email;
@@ -101,7 +101,7 @@ function testNoEdges() {
   const wf = workflow([StepA]).register(a);
 
   // Without any connect calls, FromNodes is never, so TerminalOutput returns unknown
-  wf.onFinish((output) => {
+  wf.subscribeWorkflowFinish((output) => {
     // output is unknown here - this is expected behavior
     void output;
   });

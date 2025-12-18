@@ -44,7 +44,7 @@ export default function loggerMiddleware<const Creators extends readonly StepCre
   workflow: WorkflowAPI<Creators>,
   options: LoggerOptions = {},
 ): WorkflowAPI<Creators> {
-  const { connect, getCurrentStep, subscribe, onFinish, goBack, stop, pause, resume, $$INTERNAL } = workflow;
+  const { connect, getCurrentStep, subscribeStepChange, subscribeWorkflowFinish, goBack, stop, pause, resume, $$INTERNAL } = workflow;
 
   const prefix = options.prefix ?? '[motif] ';
   const palette = options.palette;
@@ -54,7 +54,7 @@ export default function loggerMiddleware<const Creators extends readonly StepCre
     console.log(`%c${prefix}${label}`, styleFor(label, palette), ...(showPayload ? args : []));
   };
 
-  subscribe((currentStep) => {
+  subscribeStepChange((currentStep) => {
     const category: keyof typeof defaultPalette =
       currentStep.status === 'transitionIn'
         ? 'TransitionIn'
@@ -88,9 +88,9 @@ export default function loggerMiddleware<const Creators extends readonly StepCre
       return resume();
     },
     getCurrentStep,
-    subscribe,
-    onFinish(handler: (output: any) => void) {
-      return onFinish((output) => {
+    subscribeStepChange,
+    subscribeWorkflowFinish(handler: (output: any) => void) {
+      return subscribeWorkflowFinish((output) => {
         log('Finish', { output });
         handler(output);
       });
