@@ -44,7 +44,17 @@ export default function loggerMiddleware<const Creators extends readonly StepCre
   workflow: WorkflowAPI<Creators>,
   options: LoggerOptions = {},
 ): WorkflowAPI<Creators> {
-  const { connect, getCurrentStep, subscribeStepChange, subscribeWorkflowFinish, goBack, stop, pause, resume, $$INTERNAL } = workflow;
+  const {
+    connect,
+    getCurrentStep,
+    subscribeStepChange,
+    subscribeWorkflowFinish,
+    goBack,
+    stop,
+    pause,
+    resume,
+    $$INTERNAL,
+  } = workflow;
 
   const prefix = options.prefix ?? '[motif] ';
   const palette = options.palette;

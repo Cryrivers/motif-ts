@@ -24,6 +24,7 @@ type HandlersDeps = {
   getCurrentStep: () => { status: 'transitionIn' | 'ready' | 'transitionOut' };
   getCurrentNode: () => StepInstance<any, any, any, any, any>;
   getContext: () => any;
+  isWorkflowRunning: () => boolean;
   stop: () => void;
   runExitSequence: () => CleanupFn[];
   transitionInto: <Input, Output, Config, Api extends StepAPI, Store>(
@@ -48,6 +49,7 @@ export function createImportExportHandlers(deps: HandlersDeps) {
     getCurrentStep,
     getCurrentNode,
     getContext,
+    isWorkflowRunning,
     stop,
     runExitSequence,
     transitionInto,
@@ -78,14 +80,15 @@ export function createImportExportHandlers(deps: HandlersDeps) {
       SchemaBasic.parse(payload);
       return payload;
     }
-    const currentNodeId = getCurrentNode()?.id ?? null;
+    const isRunning = isWorkflowRunning();
+    const currentNodeId = isRunning ? getCurrentNode().id : null;
     const payload: WorkflowExportFull = {
       format: 'motif-ts/full',
       ...base,
       state: {
         current: {
           nodeId: currentNodeId,
-          status: getCurrentStep().status,
+          status: isRunning ? getCurrentStep().status : 'notStarted',
           input: getContext()?.currentInput,
         },
         history: history.map((h) => ({ nodeId: h.node.id, input: h.input })),

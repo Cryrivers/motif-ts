@@ -24,8 +24,19 @@ interface PersistAPI {
 export default function devtoolsMiddleware<const Creators extends readonly StepCreatorAny[]>(
   workflow: WorkflowAPI<Creators>,
 ): WorkflowAPI<Creators> & PersistAPI {
-  const { start, register, connect, getCurrentStep, subscribeStepChange, subscribeWorkflowFinish, goBack, stop, pause, resume, $$INTERNAL } =
-    workflow;
+  const {
+    start,
+    register,
+    connect,
+    getCurrentStep,
+    subscribeStepChange,
+    subscribeWorkflowFinish,
+    goBack,
+    stop,
+    pause,
+    resume,
+    $$INTERNAL,
+  } = workflow;
 
   const edgeInventoryMap = new Map<string, DeserializableEdgeFunc>([
     ['default', edge],
@@ -43,6 +54,7 @@ export default function devtoolsMiddleware<const Creators extends readonly StepC
     getCurrentStep,
     getCurrentNode: $$INTERNAL.getCurrentNode,
     getContext: $$INTERNAL.getContext,
+    isWorkflowRunning: $$INTERNAL.isWorkflowRunning,
     runExitSequence: $$INTERNAL.runExitSequence,
     transitionInto: $$INTERNAL.transitionInto,
     stop: $$INTERNAL.stop,

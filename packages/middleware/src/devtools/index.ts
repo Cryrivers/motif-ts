@@ -27,7 +27,7 @@ export default function devtoolsMiddleware<const Creators extends readonly StepC
     getCurrentStep,
     subscribeStepChange,
     pause,
-    $$INTERNAL: { nodes, transitionInto, getCurrentNode, getContext, history },
+    $$INTERNAL: { nodes, transitionInto, getCurrentNode, getContext, history, isWorkflowRunning },
   } = workflow;
 
   const { name } = options;
@@ -41,39 +41,58 @@ export default function devtoolsMiddleware<const Creators extends readonly StepC
   const devtools = ext.connect({ name: name ?? 'motif workflow' });
 
   type DevtoolsSnapshot = {
-    currentStatus: string;
-    currentNodeId: string;
-    currentInput: unknown;
-    currentState: Record<string, unknown> | undefined;
+    current: {
+      status: string;
+      kind: string;
+      name: string;
+      nodeId: string;
+      input: unknown;
+      state: Record<string, unknown> | undefined;
+    };
     history: {
       node: StepInstance<any, any, any, any, any>;
       input: unknown;
       outCleanupOnBack: CleanupFn[];
     }[];
+    stores: Record<string, unknown>;
   };
 
   function recordAndSend(type: string) {
     const state = buildSnapshot();
-    devtools.send({ type }, state);
+    if (state) {
+      devtools.send({ type }, state);
+    }
   }
 
-  function buildSnapshot(): DevtoolsSnapshot {
+  function buildSnapshot(): DevtoolsSnapshot | null {
+    if (!isWorkflowRunning()) {
+      return null;
+    }
     const currentNode = getCurrentNode();
     const current = getCurrentStep();
     const context = getContext();
+    const stores: Record<string, unknown> = {};
+    for (const node of nodes) {
+      if (node.storeApi) {
+        stores[node.id] = node.storeApi.getState();
+      }
+    }
     return {
-      currentStatus: current.status,
-      currentNodeId: currentNode.id,
-      currentInput: context?.currentInput,
-      currentState: currentNode.storeApi?.getState(),
+      current: {
+        status: current.status,
+        kind: currentNode.kind,
+        name: currentNode.name,
+        nodeId: currentNode.id,
+        input: context?.currentInput,
+        state: currentNode.storeApi?.getState(),
+      },
       history,
+      stores,
     };
   }
 
   function restoreFromSnapshot({
-    currentNodeId,
-    currentInput,
-    currentState,
+    current: { nodeId: currentNodeId, input: currentInput, state: currentState },
     history: historyToRestore,
   }: DevtoolsSnapshot) {
     const nodesById = new Map(Array.from(nodes).map((n) => [n.id, n] as const));
@@ -104,6 +123,7 @@ export default function devtoolsMiddleware<const Creators extends readonly StepC
           if (typeof next === 'string') {
             try {
               const parsed = JSON.parse(next);
+              pause(); // Run cleanup before restoring
               restoreFromSnapshot(parsed);
             } catch {
               // ignore invalid state
@@ -113,9 +133,13 @@ export default function devtoolsMiddleware<const Creators extends readonly StepC
         }
         case 'JUMP_TO_ACTION': {
           pause();
-          if (typeof message.state === 'string') {
-            const parsed = JSON.parse(message.state) as DevtoolsSnapshot;
-            restoreFromSnapshot(parsed);
+          const actionId = message.payload.actionId;
+          const computedStates = message.payload.nextLiftedState?.computedStates;
+          if (Array.isArray(computedStates) && typeof actionId === 'number') {
+            const s = computedStates[actionId]?.state;
+            if (s) {
+              restoreFromSnapshot(s);
+            }
           }
           break;
         }

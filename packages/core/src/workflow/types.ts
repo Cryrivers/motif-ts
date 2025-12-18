@@ -130,7 +130,9 @@ export interface WorkflowAPI<
    * @param handler - A function that is called whenever the current step changes.
    * @returns A function to unsubscribe.
    */
-  subscribeStepChange: (handler: (currentStep: CurrentStepStatus<Creators>, isWorkflowRunning: boolean) => void) => () => void;
+  subscribeStepChange: (
+    handler: (currentStep: CurrentStepStatus<Creators>, isWorkflowRunning: boolean) => void,
+  ) => () => void;
 
   /**
    * Subscribes to the workflow finish event.

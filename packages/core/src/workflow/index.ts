@@ -120,7 +120,9 @@ export function workflow<const Creators extends readonly StepCreatorAny[]>(inven
 
   Object.freeze(inventory);
 
-  const subscribeStepChange = (handler: (currentStep: CurrentStepStatus<Creators>, isWorkflowRunning: boolean) => void) => {
+  const subscribeStepChange = (
+    handler: (currentStep: CurrentStepStatus<Creators>, isWorkflowRunning: boolean) => void,
+  ) => {
     subscribers.add(handler);
     return () => {
       subscribers.delete(handler);

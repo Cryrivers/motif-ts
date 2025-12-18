@@ -74,3 +74,28 @@ exports[`Export workflow - basic and full > exports full state including current
   },
 }
 `;
+
+exports[`Export workflow - basic and full > exports when not started (no current node) > full-export-not-started 1`] = `
+{
+  "edges": [],
+  "format": "motif-ts/full",
+  "nodes": [
+    {
+      "config": undefined,
+      "id": "A:a",
+      "kind": "A",
+      "name": "a",
+    },
+  ],
+  "schemaVersion": "1.0.0",
+  "state": {
+    "current": {
+      "input": undefined,
+      "nodeId": null,
+      "status": "notStarted",
+    },
+    "history": [],
+    "stores": {},
+  },
+}
+`;
