@@ -120,7 +120,7 @@ export function workflow<const Creators extends readonly StepCreatorAny[]>(inven
 
   Object.freeze(inventory);
 
-  const subscribe = (handler: (currentStep: CurrentStepStatus<Creators>, isWorkflowRunning: boolean) => void) => {
+  const onStepChange = (handler: (currentStep: CurrentStepStatus<Creators>, isWorkflowRunning: boolean) => void) => {
     subscribers.add(handler);
     return () => {
       subscribers.delete(handler);
@@ -581,7 +581,7 @@ export function workflow<const Creators extends readonly StepCreatorAny[]>(inven
     register,
     connect,
     getCurrentStep,
-    subscribe,
+    onStepChange,
     onFinish,
     goBack,
     start,
@@ -604,5 +604,7 @@ export function workflow<const Creators extends readonly StepCreatorAny[]>(inven
     },
   };
 
-  return workflowApis;
+  // Cast to WorkflowAPI - the Registered and FromNodes type parameters are tracked
+  // at compile-time through the interface, not the implementation.
+  return workflowApis as unknown as WorkflowAPI<Creators>;
 }
