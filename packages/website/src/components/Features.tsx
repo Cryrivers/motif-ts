@@ -76,12 +76,15 @@ export default function Features() {
               {feature.title}
             </h3>
 
-            <p className="text-sm leading-relaxed text-gray-400">{feature.description}</p>
+            <p className="text-sm leading-relaxed text-muted-foreground">{feature.description}</p>
             <div className="flex flex-col gap-3">
               {feature.packageName.map((packageName, index) => (
-                <code className={cn('text-sm', packageName.active ? feature.color : 'text-gray-400')} key={index}>
+                <code
+                  className={cn('text-sm', packageName.active ? feature.color : 'text-muted-foreground')}
+                  key={index}
+                >
                   {packageName.name}
-                  {packageName.active ? null : <span className="text-gray-600">(coming soon)</span>}
+                  {packageName.active ? null : <span className="text-muted">(coming soon)</span>}
                 </code>
               ))}
             </div>

@@ -13,12 +13,12 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(
       'inline-flex items-center justify-center rounded-xl font-semibold transition-all focus:outline-none focus:ring-2 focus:ring-offset-2 disabled:opacity-50 disabled:pointer-events-none';
 
     const variants = {
-      primary: 'bg-blue-600 text-white shadow-lg shadow-blue-500/20 hover:bg-blue-500 focus:ring-blue-500',
-      secondary: 'bg-gray-800 text-white hover:bg-gray-700 focus:ring-gray-500',
-      outline: 'border border-gray-700 bg-transparent text-gray-300 hover:bg-white/5 hover:text-white',
-      ghost: 'text-gray-400 hover:bg-white/5 hover:text-white',
+      primary: 'bg-primary text-primary-foreground shadow-lg shadow-primary/20 hover:bg-blue-500 focus:ring-primary',
+      secondary: 'bg-secondary text-secondary-foreground hover:bg-gray-700 focus:ring-gray-500',
+      outline: 'border border-border bg-transparent text-muted-foreground hover:bg-surface-hover hover:text-foreground',
+      ghost: 'text-muted-foreground hover:bg-surface-hover hover:text-foreground',
       glass:
-        'glass-button bg-white/5 text-white backdrop-blur-md border border-white/10 hover:bg-white/10 hover:border-white/20',
+        'glass-button bg-surface text-foreground backdrop-blur-md border border-border hover:bg-surface-hover hover:border-border-hover',
       danger: 'bg-red-500/10 text-red-400 border border-red-500/50 hover:bg-red-500/20',
       white: 'bg-white text-black shadow-lg shadow-white/5 hover:bg-gray-100',
     };

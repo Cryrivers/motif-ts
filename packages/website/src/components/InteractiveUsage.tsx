@@ -48,8 +48,8 @@ export default function InteractiveUsage({ blocks }: { blocks: CodeBlock[] }) {
               className={cn(
                 'group flex min-w-[160px] shrink-0 items-center gap-3 rounded-xl p-3 text-left transition-all duration-300 lg:w-full lg:items-start lg:gap-4 lg:p-4',
                 isActive
-                  ? 'bg-white/10 lg:bg-white/5'
-                  : 'bg-white/5 hover:bg-white/10 lg:bg-transparent lg:hover:bg-white/5',
+                  ? 'bg-surface-hover lg:bg-white/5'
+                  : 'bg-surface hover:bg-surface-hover lg:bg-transparent lg:hover:bg-surface',
               )}
             >
               <div
@@ -66,13 +66,13 @@ export default function InteractiveUsage({ blocks }: { blocks: CodeBlock[] }) {
                 <h3
                   className={cn(
                     'font-semibold',
-                    isActive ? 'text-white' : 'text-gray-300 group-hover:text-white',
+                    isActive ? 'text-white' : 'text-muted-foreground group-hover:text-foreground',
                     'lg:mb-1',
                   )}
                 >
                   {block.label}
                 </h3>
-                <p className="hidden text-sm leading-relaxed text-gray-500 lg:block">{block.description}</p>
+                <p className="hidden text-sm leading-relaxed text-muted lg:block">{block.description}</p>
               </div>
             </button>
           );
@@ -82,14 +82,14 @@ export default function InteractiveUsage({ blocks }: { blocks: CodeBlock[] }) {
       {/* Code Window */}
       <div className="lg:col-span-3">
         <MacOSWindow
-          className="flex h-full min-h-[400px] flex-col overflow-hidden border-gray-800"
+          className="flex h-full min-h-[400px] flex-col overflow-hidden border-border"
           contentClassName="flex-1 flex flex-col min-h-0"
           title={`${activeBlock.label.toLowerCase().replace(/\s+/g, '-')}.ts`}
           variant="glass"
-          headerClassName="bg-black/20 border-gray-800"
+          headerClassName="bg-black/20 border-border"
         >
           {/* Code Content */}
-          <div className="relative w-full min-w-0 flex-1 overflow-hidden bg-[#0a0c10]">
+          <div className="relative w-full min-w-0 flex-1 overflow-hidden bg-background">
             <div className="custom-scrollbar absolute inset-0 overflow-auto p-6">
               <AnimatePresence mode="wait">
                 <motion.div

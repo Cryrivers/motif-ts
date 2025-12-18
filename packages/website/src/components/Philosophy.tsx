@@ -93,9 +93,9 @@ export default function Philosophy() {
               delay={index * 0.1}
               footer={
                 item.poweredBy && (
-                  <div className="flex items-center gap-2 text-sm text-gray-500">
+                  <div className="flex items-center gap-2 text-sm text-muted">
                     <span className="text-xxs font-semibold tracking-widest uppercase">Powered by</span>
-                    <div className="flex items-center gap-1.5 text-gray-300">
+                    <div className="flex items-center gap-1.5 text-muted-foreground">
                       <item.poweredBy.logo className="h-5 w-5" />
                       <span className="font-medium">{item.poweredBy.name}</span>
                     </div>

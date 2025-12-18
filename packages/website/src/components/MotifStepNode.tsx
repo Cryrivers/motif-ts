@@ -47,7 +47,7 @@ const MotifStepNode = ({ data }: NodeProps<MotifStepData>) => {
         ? '!border-blue-500 shadow-[0_0_15px_rgba(59,130,246,0.3)]'
         : 'border-blue-500 shadow-[0_0_15px_rgba(59,130,246,0.3)]';
     } else {
-      return important ? '!border-gray-700' : 'border-gray-700';
+      return important ? '!border-border' : 'border-border';
     }
   };
 
@@ -84,20 +84,20 @@ const MotifStepNode = ({ data }: NodeProps<MotifStepData>) => {
       {/* ) : null} */}
 
       {/* Header */}
-      <div className="flex items-center justify-between rounded-t-xl border-b border-gray-800 bg-gray-900/50 p-3">
-        <span className="font-bold text-gray-200">{data.label}</span>
+      <div className="flex items-center justify-between rounded-t-xl border-b border-border bg-secondary/50 p-3">
+        <span className="font-bold text-foreground">{data.label}</span>
         {data.hasStore && <Database className="h-4 w-4 text-purple-400" />}
       </div>
 
       {/* Body */}
       <div className="space-y-2 p-3">
         {data.inputSchema && (
-          <div className="flex items-center gap-2 font-mono text-xs text-gray-400">
+          <div className="flex items-center gap-2 font-mono text-xs text-muted-foreground">
             <span className="text-blue-400">In:</span> {data.inputSchema}
           </div>
         )}
         {data.outputSchema && (
-          <div className="flex items-center gap-2 font-mono text-xs text-gray-400">
+          <div className="flex items-center gap-2 font-mono text-xs text-muted-foreground">
             <span className="text-green-400">Out:</span> {data.outputSchema}
           </div>
         )}
@@ -105,7 +105,7 @@ const MotifStepNode = ({ data }: NodeProps<MotifStepData>) => {
         {/* Status Badge */}
         <div
           className={cn('mt-2 w-fit rounded-full px-2 py-1 text-[10px] font-bold tracking-wider uppercase', {
-            'bg-gray-800 text-gray-500': data.status === 'idle',
+            'bg-secondary text-muted': data.status === 'idle',
             'bg-yellow-500/20 text-yellow-400': data.status === 'transitionIn',
             'bg-green-500/20 text-green-400': data.status === 'ready',
             'bg-blue-500/20 text-blue-400': data.status === 'transitionOut',

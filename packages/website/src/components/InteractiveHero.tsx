@@ -362,7 +362,7 @@ export default function InteractiveHero() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.2 }}
-          className="mb-8 text-xl text-gray-400"
+          className="mb-8 text-xl text-muted-foreground"
         >
           Dead simple. Fully typed. Effortlessly orchestrated.
         </motion.p>
@@ -388,7 +388,7 @@ export default function InteractiveHero() {
         transition={{ duration: 1, delay: 0.5 }}
         className="relative hidden h-[500px] w-full max-w-6xl md:block"
       >
-        <GlassPanel className="h-full w-full overflow-hidden border-gray-800 shadow-2xl">
+        <GlassPanel className="h-full w-full overflow-hidden border-border shadow-2xl">
           <ReactFlow
             nodes={nodes}
             edges={edges}
@@ -411,8 +411,8 @@ export default function InteractiveHero() {
         </GlassPanel>
 
         {/* Overlay Badge */}
-        <div className="glass-button absolute top-4 right-4 flex items-center gap-2 rounded-full px-3 py-1 text-xs text-gray-400">
-          <div className={cn('h-2 w-2 rounded-full', isRunning ? 'animate-pulse bg-green-500' : 'bg-gray-500')} />
+        <div className="glass-button absolute top-4 right-4 flex items-center gap-2 rounded-full px-3 py-1 text-xs text-muted-foreground">
+          <div className={cn('h-2 w-2 rounded-full', isRunning ? 'animate-pulse bg-green-500' : 'bg-muted')} />
           {isRunning ? 'Workflow Running...' : 'Idle'}
         </div>
       </motion.div>
@@ -427,9 +427,11 @@ export default function InteractiveHero() {
         <GlassPanel className="border-gray-800 p-6 text-center">
           <div className="mb-4 flex items-center justify-center gap-2">
             <div className={cn('h-2 w-2 rounded-full', isRunning ? 'animate-pulse bg-green-500' : 'bg-gray-500')} />
-            <span className="text-sm text-gray-400">{isRunning ? 'Workflow Running...' : 'Interactive Demo'}</span>
+            <span className="text-sm text-muted-foreground">
+              {isRunning ? 'Workflow Running...' : 'Interactive Demo'}
+            </span>
           </div>
-          <p className="text-sm leading-relaxed text-gray-500">
+          <p className="text-sm leading-relaxed text-muted">
             Explore the full interactive workflow diagram on a larger screen.
           </p>
         </GlassPanel>

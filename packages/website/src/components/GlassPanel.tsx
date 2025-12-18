@@ -12,8 +12,8 @@ export default function GlassPanel({ children, className, hoverEffect = false, .
   return (
     <motion.div
       className={cn(
-        'glass-panel rounded-2xl border border-white/5',
-        hoverEffect && 'transition-all hover:-translate-y-1 hover:bg-white/5',
+        'glass-panel rounded-2xl border border-border',
+        hoverEffect && 'transition-all hover:-translate-y-1 hover:bg-surface-hover',
         className,
       )}
       {...props}

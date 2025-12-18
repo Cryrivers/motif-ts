@@ -33,8 +33,10 @@ export default function Header() {
     <>
       <header
         className={cn(
-          'fixed top-0 z-50 w-full border-b border-white/10 transition-colors duration-300',
-          isMobileMenuOpen ? 'bg-black' : 'bg-black/50 backdrop-blur-md supports-backdrop-filter:bg-black/20',
+          'fixed top-0 z-50 w-full border-b border-border transition-colors duration-300',
+          isMobileMenuOpen
+            ? 'bg-background'
+            : 'bg-background/50 backdrop-blur-md supports-backdrop-filter:bg-background/20',
         )}
       >
         <a
@@ -54,19 +56,19 @@ export default function Header() {
               <Link
                 key={link.href}
                 href={link.href}
-                className="text-sm font-medium text-gray-400 transition-colors hover:text-white"
+                className="text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
               >
                 {link.label}
               </Link>
             ))}
 
-            <div className="h-4 w-px bg-white/10" />
+            <div className="h-4 w-px bg-border" />
 
             <a
               href="https://github.com/Cryrivers/motif-ts"
               target="_blank"
               rel="noopener noreferrer"
-              className="flex items-center gap-2 rounded-full border border-white/5 bg-white/10 px-4 py-1.5 text-sm font-medium text-white transition-all hover:bg-white/20"
+              className="flex items-center gap-2 rounded-full border border-border bg-surface px-4 py-1.5 text-sm font-medium text-foreground transition-all hover:bg-surface-hover"
             >
               <Github className="h-4 w-4" />
               GitHub
@@ -75,7 +77,7 @@ export default function Header() {
 
           {/* Mobile Menu Toggle */}
           <button
-            className="flex items-center justify-center rounded-md p-2 text-gray-400 transition-colors hover:bg-white/10 hover:text-white md:hidden"
+            className="flex items-center justify-center rounded-md p-2 text-muted-foreground transition-colors hover:bg-surface-hover hover:text-foreground md:hidden"
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
             aria-label="Toggle menu"
           >
@@ -92,7 +94,7 @@ export default function Header() {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -10 }}
             transition={{ duration: 0.2 }}
-            className="fixed inset-0 z-40 overflow-y-auto bg-black pt-24 md:hidden"
+            className="fixed inset-0 z-40 overflow-y-auto bg-background pt-24 md:hidden"
           >
             <nav className="flex flex-col gap-1 px-6 pb-10">
               {LINKS.map((link, idx) => (
@@ -104,12 +106,12 @@ export default function Header() {
                 >
                   <Link
                     href={link.href}
-                    className="block rounded-lg py-4 text-lg font-medium text-gray-300 transition-colors hover:text-white active:bg-white/5"
+                    className="block rounded-lg py-4 text-lg font-medium text-muted-foreground transition-colors hover:text-foreground active:bg-surface"
                     onClick={() => setIsMobileMenuOpen(false)}
                   >
                     {link.label}
                   </Link>
-                  <div className="h-px w-full bg-white/5" />
+                  <div className="h-px w-full bg-border" />
                 </motion.div>
               ))}
 
@@ -123,7 +125,7 @@ export default function Header() {
                   href="https://github.com/Cryrivers/motif-ts"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex w-full items-center justify-center gap-2 rounded-lg border border-white/10 bg-white/5 px-6 py-4 text-base font-medium text-white transition-all hover:bg-white/10"
+                  className="flex w-full items-center justify-center gap-2 rounded-lg border border-border bg-surface px-6 py-4 text-base font-medium text-foreground transition-all hover:bg-surface-hover"
                 >
                   <Github className="h-5 w-5" />
                   GitHub Repository

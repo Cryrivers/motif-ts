@@ -24,7 +24,7 @@ export default function MacOSWindow({
   const containerVariant =
     variant === 'glass'
       ? 'bg-black/20 backdrop-blur-md border-white/5' // Glass style
-      : 'bg-[#0A0A0A] border-white/10 shadow-2xl'; // Solid style (more like CoreConcept)
+      : 'bg-background border-border shadow-2xl'; // Solid style (more like CoreConcept)
 
   // Header styles
   const headerBase = 'flex items-center justify-between border-b px-4 py-3 select-none';
@@ -41,7 +41,7 @@ export default function MacOSWindow({
         </div>
 
         {/* Title (Optional) */}
-        {title && <div className="font-mono text-xs font-medium tracking-wide text-gray-500">{title}</div>}
+        {title && <div className="font-mono text-xs font-medium tracking-wide text-muted">{title}</div>}
 
         {/* Spacer to balance the header if title is centered (simplified approach: just flex-between) */}
         <div className="w-12" />

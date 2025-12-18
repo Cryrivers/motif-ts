@@ -6,6 +6,12 @@
   --color-background: #0a0a0a;
   --color-foreground: #ededed;
   
+  --color-surface: rgba(255, 255, 255, 0.05);
+  --color-surface-hover: rgba(255, 255, 255, 0.1);
+  
+  --color-border: rgba(255, 255, 255, 0.1);
+  --color-border-hover: rgba(255, 255, 255, 0.2);
+
   --color-primary: #3b82f6;
   --color-primary-foreground: #ffffff;
   
@@ -14,6 +20,9 @@
   
   --color-accent: #8b5cf6;
   --color-accent-foreground: #ffffff;
+  
+  --color-muted: #71717a; /* neutral-500 */
+  --color-muted-foreground: #a1a1aa; /* neutral-400 */
 
   --font-sans: 'Inter', system-ui, sans-serif;
   --font-mono: 'JetBrains Mono', ui-monospace,  monospace;

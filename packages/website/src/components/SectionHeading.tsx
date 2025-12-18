@@ -20,7 +20,7 @@ export default function SectionHeading({ title, description, className }: Sectio
       <h2 className="mb-6 bg-linear-to-b from-white to-white/60 bg-clip-text text-3xl leading-[1.2] font-bold tracking-tight text-transparent md:text-5xl">
         {title}
       </h2>
-      {description && <p className="mx-auto max-w-2xl text-lg text-gray-400">{description}</p>}
+      {description && <p className="mx-auto max-w-2xl text-lg text-muted-foreground">{description}</p>}
     </motion.div>
   );
 }
