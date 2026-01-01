@@ -252,6 +252,11 @@ export function step<
     };
     return instance;
   }
-  const createWithKind = Object.assign(createInstance, { kind: def.kind });
+  const createWithKind = Object.assign(createInstance, {
+    kind: def.kind,
+    inputSchema: def.inputSchema,
+    outputSchema: def.outputSchema,
+    configSchema: def.configSchema,
+  });
   return createWithKind;
 }

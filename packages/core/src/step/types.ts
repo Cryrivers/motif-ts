@@ -63,15 +63,23 @@ export type StepInstance<Input, Output, Config, Api extends StepAPI, Store> = {
 
 export type StepCreatorAny = {
   kind: string;
+  inputSchema?: ZodType<unknown>;
+  outputSchema?: ZodType<unknown>;
+  configSchema?: ZodType<unknown>;
 } & ((...args: any[]) => StepInstance<any, any, any, any, any>);
 
 export interface StepCreatorNoConfig<K extends string, Input, Output, Api extends StepAPI, Store> {
   kind: K;
+  inputSchema?: ZodType<Input>;
+  outputSchema?: ZodType<Output>;
   (name?: string): StepInstance<Input, Output, undefined, Api, Store>;
 }
 
 export interface StepCreatorConfig<K extends string, Input, Output, Config, Api extends StepAPI, Store> {
   kind: K;
+  inputSchema?: ZodType<Input>;
+  outputSchema?: ZodType<Output>;
+  configSchema?: ZodType<Config>;
   (name: string, config: Config): StepInstance<Input, Output, Config, Api, Store>;
   (config: Config): StepInstance<Input, Output, Config, Api, Store>;
 }
