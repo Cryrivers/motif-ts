@@ -1,10 +1,10 @@
-import { type StepCreatorAny, type WorkflowAPI } from '@motif-ts/core';
-import { onUnmounted, readonly, shallowRef } from 'vue';
+import { type CurrentStep, type StepCreatorAny, type WorkflowAPI } from '@motif-ts/core';
+import { onUnmounted, readonly, shallowRef, type DeepReadonly, type ShallowRef } from 'vue';
 
 export function useWorkflow<const Creators extends readonly StepCreatorAny[]>({
   subscribeStepChange,
   getCurrentStep,
-}: WorkflowAPI<Creators>) {
+}: WorkflowAPI<Creators>): DeepReadonly<ShallowRef<CurrentStep<Creators>>> {
   const state = shallowRef(getCurrentStep());
 
   const unsubscribe = subscribeStepChange(() => {
@@ -13,13 +13,13 @@ export function useWorkflow<const Creators extends readonly StepCreatorAny[]>({
 
   onUnmounted(unsubscribe);
 
-  return readonly(state);
+  return readonly(state) as DeepReadonly<ShallowRef<CurrentStep<Creators>>>;
 }
 
 export function useIsWorkflowRunning({
   subscribeStepChange,
   $$INTERNAL: { isWorkflowRunning },
-}: WorkflowAPI<readonly StepCreatorAny[]>) {
+}: WorkflowAPI<readonly StepCreatorAny[]>): DeepReadonly<ShallowRef<boolean>> {
   const isRunning = shallowRef(isWorkflowRunning());
 
   const unsubscribe = subscribeStepChange(() => {
@@ -28,5 +28,5 @@ export function useIsWorkflowRunning({
 
   onUnmounted(unsubscribe);
 
-  return readonly(isRunning);
+  return readonly(isRunning) as DeepReadonly<ShallowRef<boolean>>;
 }
