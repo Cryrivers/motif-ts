@@ -28,11 +28,10 @@ const FEATURES = [
     title: 'Framework Adapters',
     packageName: [
       { name: '@motif-ts/react', active: true },
-      { name: '@motif-ts/vue', active: false },
-      { name: '@motif-ts/svelte', active: false },
+      { name: '@motif-ts/vue', active: true },
+      { name: '@motif-ts/svelte', active: true },
     ],
-    description:
-      'Use adapters to integrate with UI of choice. React adapter is included. More adapters are coming soon.',
+    description: 'Use adapters to integrate with UI of choice. React, Vue, and Svelte adapters are included.',
     icon: LayoutTemplate,
     color: 'text-pink-400',
     bg: 'bg-pink-500/10',

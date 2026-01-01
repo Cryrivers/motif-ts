@@ -53,11 +53,40 @@ export function SignupForm() {
   return <div>Processing...</div>;
 }`;
 
-  const [installHtml, stepHtml, workflowHtml, reactHtml] = await Promise.all([
+  const vueCode = `<script setup lang="ts">
+import { useWorkflow } from '@motif-ts/vue';
+import { flow } from './workflow';
+
+const current = useWorkflow(flow);
+</script>
+
+<template>
+  <button v-if="current.kind === 'validate'" @click="current.state.check()">
+    Validate
+  </button>
+  <div v-else>Processing...</div>
+</template>`;
+
+  const svelteCode = `<script lang="ts">
+import { createWorkflowStore } from '@motif-ts/svelte';
+import { flow } from './workflow';
+
+const current = createWorkflowStore(flow);
+</script>
+
+{#if $current.kind === 'validate'}
+  <button onclick={() => $current.state.check()}>Validate</button>
+{:else}
+  <div>Processing...</div>
+{/if}`;
+
+  const [installHtml, stepHtml, workflowHtml, reactHtml, vueHtml, svelteHtml] = await Promise.all([
     highlight(installCode, 'bash', 'github-dark-high-contrast'),
     highlight(stepCode, 'typescript', 'github-dark-high-contrast'),
     highlight(workflowCode, 'typescript', 'github-dark-high-contrast'),
     highlight(reactCode, 'tsx', 'github-dark-high-contrast'),
+    highlight(vueCode, 'vue', 'github-dark-high-contrast'),
+    highlight(svelteCode, 'svelte', 'github-dark-high-contrast'),
   ]);
 
   const blocks = [
@@ -88,6 +117,20 @@ export function SignupForm() {
       iconName: 'code' as const,
       description: 'Use the `useWorkflow` hook to drive your UI based on the current step.',
       codeHtml: reactHtml,
+    },
+    {
+      label: 'Vue Integration',
+      value: 'vue',
+      iconName: 'code' as const,
+      description: 'Use the `useWorkflow` composable to drive your UI based on the current step.',
+      codeHtml: vueHtml,
+    },
+    {
+      label: 'Svelte Integration',
+      value: 'svelte',
+      iconName: 'code' as const,
+      description: 'Use the `createWorkflowStore` function to create a reactive store for the current step.',
+      codeHtml: svelteHtml,
     },
   ];
 

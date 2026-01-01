@@ -1,0 +1,45 @@
+{
+  "name": "@motif-ts/svelte",
+  "version": "0.0.0",
+  "description": "Svelte bindings for motif-ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.mts",
+      "default": "./dist/index.mjs"
+    }
+  },
+  "sideEffects": false,
+  "scripts": {
+    "test": "vitest run --typecheck",
+    "format": "prettier \"**/*.{ts,cjs,mjs,json}\" --write",
+    "lint:fix": "eslint \"{src,tests}/**/*.ts\" --fix",
+    "type-check": "tsc --noEmit",
+    "build": "tsdown --minify",
+    "dev": "tsdown --watch"
+  },
+  "keywords": [],
+  "author": {
+    "name": "Zhongliang Wang",
+    "url": "https://zhongliang.wang",
+    "email": "hello@zhongliang.wang"
+  },
+  "license": "MIT",
+  "type": "module",
+  "devDependencies": {
+    "@eslint/js": "^9.39.2",
+    "@ianvs/prettier-plugin-sort-imports": "^4.7.0",
+    "@motif-ts/core": "workspace:*",
+    "@vitest/coverage-v8": "4.0.16",
+    "eslint": "^9.39.2",
+    "prettier": "^3.7.4",
+    "tsdown": "^0.18.3",
+    "typescript": "^5.9.3",
+    "typescript-eslint": "^8.50.1",
+    "vitest": "^4.0.16",
+    "svelte": "^5.33.7"
+  },
+  "peerDependencies": {
+    "@motif-ts/core": "workspace:*",
+    "svelte": "^5.0.0"
+  }
+}

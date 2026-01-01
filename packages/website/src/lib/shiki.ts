@@ -19,7 +19,7 @@ function getHighlighter() {
   if (!globalThis.__motifHighlighter) {
     globalThis.__motifHighlighter = createHighlighter({
       themes: ['github-light-high-contrast', 'github-dark-high-contrast'],
-      langs: ['ts', 'tsx', 'bash', 'json'],
+      langs: ['ts', 'tsx', 'bash', 'json', 'vue', 'svelte'],
     });
   }
   return globalThis.__motifHighlighter;
