@@ -112,25 +112,15 @@ const current = createWorkflowStore(flow);
       codeHtml: workflowHtml,
     },
     {
-      label: 'React Integration',
-      value: 'react',
+      label: 'UI Integration',
+      value: 'ui',
       iconName: 'code' as const,
-      description: 'Use the `useWorkflow` hook to drive your UI based on the current step.',
-      codeHtml: reactHtml,
-    },
-    {
-      label: 'Vue Integration',
-      value: 'vue',
-      iconName: 'code' as const,
-      description: 'Use the `useWorkflow` composable to drive your UI based on the current step.',
-      codeHtml: vueHtml,
-    },
-    {
-      label: 'Svelte Integration',
-      value: 'svelte',
-      iconName: 'code' as const,
-      description: 'Use the `createWorkflowStore` function to create a reactive store for the current step.',
-      codeHtml: svelteHtml,
+      description: 'Connect your workflow to your UI framework of choice.',
+      variants: [
+        { label: 'React', value: 'react', codeHtml: reactHtml, filename: 'Component.tsx' },
+        { label: 'Vue', value: 'vue', codeHtml: vueHtml, filename: 'Component.vue' },
+        { label: 'Svelte', value: 'svelte', codeHtml: svelteHtml, filename: 'Component.svelte' },
+      ],
     },
   ];
 

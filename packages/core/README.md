@@ -34,7 +34,7 @@ const MyStep = step(
     return {
       /* Public API exposed to UI */
     };
-  }
+  },
 );
 ```
 
@@ -48,6 +48,7 @@ const MyStep = step(
   - `deps` with values: runs when shallowly unequal to previous
 
 Cleanup execution order when leaving a step:
+
 1. Run `transitionOut` hooks (and invoke any returned cleanup)
 2. Run `effect` cleanups
 3. Run `transitionIn` cleanups
@@ -67,6 +68,7 @@ Promise rejections in hooks are logged and swallowed to maintain workflow contin
 
 ```ts
 import { conditionalEdge } from '@motif-ts/core';
+
 orchestrator.connect<number, number>(conditionalEdge(a, b, (out) => out % 2 === 0));
 ```
 
@@ -74,6 +76,7 @@ orchestrator.connect<number, number>(conditionalEdge(a, b, (out) => out % 2 === 
 
 ```ts
 import { transformEdge } from '@motif-ts/core';
+
 orchestrator.connect(transformEdge(a, b, (out) => ({ username: out.name, years: out.age })));
 ```
 
@@ -125,17 +128,17 @@ const cur = orchestrator.getCurrentStep();
 unsub();
 ```
 
-
-
 ## Step Variants and Build Args
 
 `Step` supports combinations of:
+
 - `inputSchema` (optional)
 - `outputSchema` (optional)
 - `configSchema` (optional)
 - `createStore` (optional)
 
 Build args include:
+
 - Always: `name`, `next`, `transitionIn`, `transitionOut`, `effect`
 - Plus `input` when `inputSchema` is present
 - Plus `config` when `configSchema` is present
@@ -160,5 +163,3 @@ Build args include:
 
 - Hooks may be `async`, but cleanup functions must be returned synchronously
 - Works in Node and browsers; React integration is optional
-
-

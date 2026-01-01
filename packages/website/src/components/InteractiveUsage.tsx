@@ -12,7 +12,14 @@ type CodeBlock = {
   value: string;
   iconName: 'terminal' | 'box' | 'layers' | 'code';
   description: string;
-  codeHtml: string;
+
+  codeHtml?: string;
+  variants?: {
+    label: string;
+    value: string;
+    codeHtml: string;
+    filename?: string;
+  }[];
 };
 
 const iconMap = {
@@ -32,6 +39,11 @@ const colorMap = {
 export default function InteractiveUsage({ blocks }: { blocks: CodeBlock[] }) {
   const [activeTab, setActiveTab] = useState(blocks[0].value);
   const activeBlock = blocks.find((b) => b.value === activeTab) || blocks[0];
+  const [activeVariantValue, setActiveVariantValue] = useState<string | undefined>(undefined);
+
+  const activeVariant = activeBlock.variants?.find((v) => v.value === activeVariantValue) || activeBlock.variants?.[0];
+  const currentCodeHtml = activeVariant ? activeVariant.codeHtml : activeBlock.codeHtml;
+  const currentTitle = activeVariant?.filename || `${activeBlock.label.toLowerCase().replace(/\s+/g, '-')}.ts`;
   return (
     <div className="grid gap-8 lg:grid-cols-5">
       {/* Sidebar / Tabs */}
@@ -84,11 +96,29 @@ export default function InteractiveUsage({ blocks }: { blocks: CodeBlock[] }) {
         <MacOSWindow
           className="flex h-full min-h-[400px] flex-col overflow-hidden border-border"
           contentClassName="flex-1 flex flex-col min-h-0"
-          title={`${activeBlock.label.toLowerCase().replace(/\s+/g, '-')}.ts`}
+          title={currentTitle}
           variant="glass"
           headerClassName="bg-black/20 border-border"
         >
           {/* Code Content */}
+          {activeBlock.variants && (
+            <div className="flex border-b border-border bg-black/10 px-4">
+              {activeBlock.variants.map((variant) => (
+                <button
+                  key={variant.value}
+                  onClick={() => setActiveVariantValue(variant.value)}
+                  className={cn(
+                    'border-b-2 px-4 py-2 text-xs font-medium transition-colors',
+                    (activeVariantValue || activeBlock.variants![0].value) === variant.value
+                      ? 'border-blue-400 text-blue-400'
+                      : 'border-transparent text-muted-foreground hover:text-foreground',
+                  )}
+                >
+                  {variant.label}
+                </button>
+              ))}
+            </div>
+          )}
           <div className="relative w-full min-w-0 flex-1 overflow-hidden bg-background">
             <div className="custom-scrollbar absolute inset-0 overflow-auto p-6">
               <AnimatePresence mode="wait">
@@ -99,7 +129,7 @@ export default function InteractiveUsage({ blocks }: { blocks: CodeBlock[] }) {
                   exit={{ opacity: 0, y: -10 }}
                   transition={{ duration: 0.2 }}
                   className="font-mono text-xs md:text-sm [&_pre]:m-0! [&_pre]:bg-transparent!"
-                  dangerouslySetInnerHTML={{ __html: activeBlock.codeHtml }}
+                  dangerouslySetInnerHTML={{ __html: currentCodeHtml || '' }}
                 />
               </AnimatePresence>
             </div>

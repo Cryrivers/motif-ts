@@ -11,7 +11,7 @@
   "sideEffects": false,
   "scripts": {
     "test": "vitest run --typecheck",
-    "format": "prettier \"**/*.{ts,cjs,mjs,json}\" --write",
+    "format": "prettier \"**/*.{md,ts,cjs,mjs,json}\" --write",
     "lint:fix": "eslint \"{src,tests}/**/*.ts\" --fix",
     "type-check": "tsc --noEmit",
     "build": "tsdown --minify",

@@ -12,6 +12,8 @@ This repository is a monorepo containing the following packages:
 - **[`@motif-ts/expression`](./packages/expression)**: A safe, side-effect-free JavaScript expression evaluator used for dynamic transition rules and data transformations.
 - **[`@motif-ts/middleware`](./packages/middleware)**: Middleware for the orchestrator, including Redux DevTools integration for time-travel debugging and state persistence.
 - **[`@motif-ts/react`](./packages/react)**: React bindings (hooks) to easily use workflows within React applications.
+- **[`@motif-ts/vue`](./packages/vue)**: Vue bindings (composables) to use workflows within Vue applications.
+- **[`@motif-ts/svelte`](./packages/svelte)**: Svelte bindings (stores) to use workflows within Svelte applications.
 
 ## Key Features
 
@@ -34,14 +36,14 @@ Use the `step` helper to define atomic units of work.
 - **Lifecycle & Effects**: Use `transitionIn`, `transitionOut`, and `effect` to orchestrate side effects.
 
 ```typescript
-import { step } from "@motif-ts/core";
-import { type StateCreator } from "zustand/vanilla";
-import z from "zod";
+import { step } from '@motif-ts/core';
+import z from 'zod';
+import { type StateCreator } from 'zustand/vanilla';
 
 // A step that collects an email
 const CollectEmail = step(
   {
-    kind: "CollectEmail",
+    kind: 'CollectEmail',
     outputSchema: z.object({ email: z.string().email() }),
   },
   ({ next }) => ({
@@ -67,7 +69,7 @@ const verifyStore: StateCreator<VerifyState> = (set) => ({
 // A step that verifies the email with a countdown and mock async check
 const VerifyEmail = step(
   {
-    kind: "VerifyEmail",
+    kind: 'VerifyEmail',
     inputSchema: z.object({ email: z.string() }),
     outputSchema: z.object({ verified: z.boolean() }),
     createStore: verifyStore,
@@ -83,7 +85,7 @@ const VerifyEmail = step(
     effect(() => {
       if (store.timeLeft === 0) {
         // Handle timeout (e.g., disable UI or auto-transition)
-        console.log("Verification timed out for:", input.email);
+        console.log('Verification timed out for:', input.email);
       }
     }, [store.timeLeft]);
 
@@ -91,6 +93,7 @@ const VerifyEmail = step(
     return {
       timeLeft: store.timeLeft,
       isChecking: store.isChecking,
+      email: input.email,
       verify: async () => {
         if (store.timeLeft === 0) return;
 
@@ -98,7 +101,7 @@ const VerifyEmail = step(
         // Simulate async verification API
         await new Promise((resolve) => setTimeout(resolve, 1000));
 
-        const isValid = input.email.endsWith("@company.com");
+        const isValid = input.email.endsWith('@company.com');
         store.setChecking(false);
         next({ verified: isValid });
       },
@@ -112,14 +115,14 @@ const VerifyEmail = step(
 Combine steps into a workflow and define the flow.
 
 ```typescript
-import { workflow } from "@motif-ts/core";
-import { devtools } from "@motif-ts/middleware";
+import { workflow } from '@motif-ts/core';
+import { devtools } from '@motif-ts/middleware';
 
 const orchestrator = workflow([CollectEmail, VerifyEmail]);
 
 // Instantiate steps with unique names
-const collect = CollectEmail("collect");
-const verify = VerifyEmail("verify");
+const collect = CollectEmail('collect');
+const verify = VerifyEmail('verify');
 
 // Register and connect
 orchestrator.register([collect, verify]);
@@ -137,30 +140,23 @@ app.start(collect);
 Use the provided hooks to consume the workflow state in your React components.
 
 ```tsx
-import { useWorkflow } from "@motif-ts/react";
+import { useWorkflow } from '@motif-ts/react';
 
 function App() {
   const current = useWorkflow(app);
 
-  if (current.step.kind === "CollectEmail") {
-    return (
-      <button onClick={() => current.step.state.submit("user@company.com")}>
-        Submit Email
-      </button>
-    );
+  if (current.kind === 'CollectEmail') {
+    return <button onClick={() => current.state.submit('user@company.com')}>Submit Email</button>;
   }
 
-  if (current.step.kind === "VerifyEmail") {
-    const { timeLeft, isChecking, verify } = current.step.state;
+  if (current.kind === 'VerifyEmail') {
+    const { timeLeft, isChecking, verify, email } = current.state;
     return (
       <div>
-        <p>Verifying: {current.step.input.email}</p>
+        <p>Verifying: {email}</p>
         <p>Time remaining: {timeLeft}s</p>
-        <button
-          disabled={isChecking || timeLeft === 0}
-          onClick={() => verify()}
-        >
-          {isChecking ? "Verifying..." : "Verify Code"}
+        <button disabled={isChecking || timeLeft === 0} onClick={() => verify()}>
+          {isChecking ? 'Verifying...' : 'Verify Code'}
         </button>
       </div>
     );
@@ -168,6 +164,68 @@ function App() {
 
   return <div>Done</div>;
 }
+```
+
+### 4. Use in Vue
+
+Use `useWorkflow` to consume the workflow state in your Vue components.
+
+```vue
+<script setup lang="ts">
+import { useWorkflow } from '@motif-ts/vue';
+
+import { app } from './workflow'; // Assuming workflow from above is exported as 'app'
+
+const current = useWorkflow(app);
+</script>
+
+<template>
+  <div v-if="current.kind === 'CollectEmail'">
+    <button @click="current.state.submit('user@company.com')">Submit Email</button>
+  </div>
+
+  <div v-else-if="current.kind === 'VerifyEmail'">
+    <p>Verifying: {{ current.state.email }}</p>
+    <p>Time remaining: {{ current.state.timeLeft }}s</p>
+    <button :disabled="current.state.isChecking || current.state.timeLeft === 0" @click="current.state.verify()">
+      {{ current.state.isChecking ? 'Verifying...' : 'Verify Code' }}
+    </button>
+  </div>
+
+  <div v-else>Done</div>
+</template>
+```
+
+### 5. Use in Svelte
+
+Use `createWorkflowStore` to create a reactive Svelte store.
+
+```svelte
+<script lang="ts">
+  import { createWorkflowStore } from "@motif-ts/svelte";
+  import { app } from "./workflow"; // Assuming workflow from above is exported as 'app'
+
+  const current = createWorkflowStore(app);
+</script>
+
+{#if $current.kind === "CollectEmail"}
+  <button on:click={() => $current.state.submit("user@company.com")}>
+    Submit Email
+  </button>
+{:else if $current.kind === "VerifyEmail"}
+  <div>
+    <p>Verifying: {$current.state.email}</p>
+    <p>Time remaining: {$current.state.timeLeft}s</p>
+    <button
+      disabled={$current.state.isChecking || $current.state.timeLeft === 0}
+      on:click={() => $current.state.verify()}
+    >
+      {$current.state.isChecking ? "Verifying..." : "Verify Code"}
+    </button>
+  </div>
+{:else}
+  <div>Done</div>
+{/if}
 ```
 
 ## Development
