@@ -28,6 +28,10 @@ const MyStep = step(
     kind: 'MyStep',
     inputSchema: z.string(), // Input type validation
     outputSchema: z.number(), // Output type validation
+    // Optional: Add descriptions for AI tools
+    apiSchema: z.object({
+      display: z.function().describe('Displays the result to the user'),
+    }),
   },
   ({ input, next, transitionIn, effect }) => {
     // ... logic
@@ -135,6 +139,7 @@ unsub();
 - `inputSchema` (optional)
 - `outputSchema` (optional)
 - `configSchema` (optional)
+- `apiSchema` (optional) - Use `.describe()` to add AI-readable context to your API.
 - `createStore` (optional)
 
 Build args include:

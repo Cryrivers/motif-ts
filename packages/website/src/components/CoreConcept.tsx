@@ -223,6 +223,16 @@ export default function CoreConcept() {
                     : <span className="text-[#e6edf3]">z.object(...)</span>,
                     <div className="py-0.5" />
                     <CodeToken
+                      active={activePart === 'api'}
+                      hoverId="api"
+                      setHover={setActivePart}
+                      className="text-[#79c0ff]"
+                    >
+                      apiSchema
+                    </CodeToken>
+                    : <span className="text-[#e6edf3]">z.object(...)</span>,
+                    <div className="py-0.5" />
+                    <CodeToken
                       active={activePart === 'config'}
                       hoverId="config"
                       setHover={setActivePart}
@@ -461,8 +471,12 @@ const DETAILS: Record<string, any> = {
     title: 'Instance API',
     description:
       'Public methods exposed to the parent app. Allows external triggers, like refreshing data or updating state.',
-    schema: null,
-    type: null,
+    schema: `z.object({
+  execute: z.function()
+})`,
+    type: `{
+  execute: () => void
+}`,
   },
 };
 

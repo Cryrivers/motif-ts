@@ -37,11 +37,13 @@ export type StepDef<
   Config,
   Store,
   Mos extends [StoreMutatorIdentifier, unknown][] = [],
+  Api extends StepAPI = StepAPI,
 > = {
   kind: Kind;
   inputSchema?: ZodType<Input>;
   outputSchema?: ZodType<Output>;
   configSchema?: ZodType<Config>;
+  apiSchema?: ZodType<Api>;
   createStore?: StateCreator<Store, [], Mos>;
   options?: Options;
 };
@@ -55,6 +57,7 @@ export type StepInstance<Input, Output, Config, Api extends StepAPI, Store> = {
   inputSchema?: ZodType<Input>;
   outputSchema?: ZodType<Output>;
   configSchema?: ZodType<Config>;
+  apiSchema?: ZodType<Api>;
   storeApi?: StoreApi<Store>;
   config?: Config;
   options?: Options;
@@ -66,12 +69,14 @@ export type StepCreatorAny = {
   inputSchema?: ZodType<unknown>;
   outputSchema?: ZodType<unknown>;
   configSchema?: ZodType<unknown>;
+  apiSchema?: ZodType<unknown>;
 } & ((...args: any[]) => StepInstance<any, any, any, any, any>);
 
 export interface StepCreatorNoConfig<K extends string, Input, Output, Api extends StepAPI, Store> {
   kind: K;
   inputSchema?: ZodType<Input>;
   outputSchema?: ZodType<Output>;
+  apiSchema?: ZodType<Api>;
   (name?: string): StepInstance<Input, Output, undefined, Api, Store>;
 }
 
@@ -80,6 +85,7 @@ export interface StepCreatorConfig<K extends string, Input, Output, Config, Api 
   inputSchema?: ZodType<Input>;
   outputSchema?: ZodType<Output>;
   configSchema?: ZodType<Config>;
+  apiSchema?: ZodType<Api>;
   (name: string, config: Config): StepInstance<Input, Output, Config, Api, Store>;
   (config: Config): StepInstance<Input, Output, Config, Api, Store>;
 }

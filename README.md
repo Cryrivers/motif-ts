@@ -32,6 +32,7 @@ Here is a quick example of how to define a simple workflow, connect it, and use 
 Use the `step` helper to define atomic units of work.
 
 - **Input/Output/Config Schemas**: Define validation and types for step data.
+- **`apiSchema` (Optional)**: Define the API shape and use `.describe()` to provide context for AI agents.
 - **`createStore`**: define local, reactive state for the step (uses [Zustand](https://github.com/pmndrs/zustand)).
 - **Lifecycle & Effects**: Use `transitionIn`, `transitionOut`, and `effect` to orchestrate side effects.
 
@@ -45,6 +46,10 @@ const CollectEmail = step(
   {
     kind: 'CollectEmail',
     outputSchema: z.object({ email: z.string().email() }),
+    // Optional: Add descriptions for AI tools
+    apiSchema: z.object({
+      submit: z.function().describe('Submits the collected email address'),
+    }),
   },
   ({ next }) => ({
     submit: (email: string) => next({ email }),
@@ -72,6 +77,12 @@ const VerifyEmail = step(
     kind: 'VerifyEmail',
     inputSchema: z.object({ email: z.string() }),
     outputSchema: z.object({ verified: z.boolean() }),
+    apiSchema: z.object({
+      timeLeft: z.number().describe('Seconds remaining for verification'),
+      isChecking: z.boolean(),
+      email: z.string(),
+      verify: z.function().describe('Triggers the verification process'),
+    }),
     createStore: verifyStore,
   },
   ({ input, next, store, transitionIn, transitionOut, effect }) => {

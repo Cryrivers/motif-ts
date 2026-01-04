@@ -13,7 +13,8 @@ export const Validate = step(
   { 
     kind: 'validate', 
     inputSchema: z.object({ email: z.string().email() }),
-    outputSchema: z.object({ isValid: z.boolean() })
+    outputSchema: z.object({ isValid: z.boolean() }),
+    apiSchema: z.object({ check: z.function() })
   }, 
   ({ next, input }) => ({
     check() {
