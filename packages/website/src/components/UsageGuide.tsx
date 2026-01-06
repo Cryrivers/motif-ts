@@ -81,13 +81,44 @@ const current = createWorkflowStore(flow);
   <div>Processing...</div>
 {/if}`;
 
-  const [installHtml, stepHtml, workflowHtml, reactHtml, vueHtml, svelteHtml] = await Promise.all([
+  const aiCode = `import { createAIEvolver, createFeedbackCollector } from '@motif-ts/ai';
+
+// AI analyzes workflow structure and execution patterns
+const feedback = createFeedbackCollector();
+const evolver = createAIEvolver(flow, {
+  callLLM: async (prompt) => llm.complete(prompt),
+  feedbackCollector: feedback,
+});
+
+// AI autonomously suggests workflow improvements
+const suggestions = await evolver.suggestWithAI();
+// → "Add validation step before payment to reduce failures"
+// → "Split user-info into smaller steps for better UX"
+
+// Apply AI-suggested evolution
+for (const suggestion of suggestions) {
+  if (suggestion.confidence > 0.8) {
+    evolver.applySuggestion(suggestion.id);
+  }
+}
+
+// AI explains what the evolved workflow does
+const explanation = await evolver.explainWorkflow();
+
+// Workflow continuously self-improves based on:
+// - Execution success/failure patterns
+// - User feedback signals
+// - Performance bottlenecks
+// - Error frequency analysis`;
+
+  const [installHtml, stepHtml, workflowHtml, reactHtml, vueHtml, svelteHtml, aiHtml] = await Promise.all([
     highlight(installCode, 'bash', 'github-dark-high-contrast'),
     highlight(stepCode, 'typescript', 'github-dark-high-contrast'),
     highlight(workflowCode, 'typescript', 'github-dark-high-contrast'),
     highlight(reactCode, 'tsx', 'github-dark-high-contrast'),
     highlight(vueCode, 'vue', 'github-dark-high-contrast'),
     highlight(svelteCode, 'svelte', 'github-dark-high-contrast'),
+    highlight(aiCode, 'typescript', 'github-dark-high-contrast'),
   ]);
 
   const blocks = [
@@ -122,6 +153,14 @@ const current = createWorkflowStore(flow);
         { label: 'Vue', value: 'vue', codeHtml: vueHtml, filename: 'Component.vue' },
         { label: 'Svelte', value: 'svelte', codeHtml: svelteHtml, filename: 'Component.svelte' },
       ],
+    },
+    {
+      label: 'AI Native',
+      value: 'ai',
+      iconName: 'brain' as const,
+      description:
+        'Workflows autonomously evolve based on execution patterns. AI creates, improves, and optimizes the workflow structure.',
+      codeHtml: aiHtml,
     },
   ];
 

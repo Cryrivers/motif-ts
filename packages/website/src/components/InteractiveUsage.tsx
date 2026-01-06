@@ -1,7 +1,7 @@
 'use client';
 
 import { cn } from '@/lib/cn';
-import { Box, Code2, Layers, Terminal } from 'lucide-react';
+import { Box, BrainCircuit, Code2, Layers, Terminal } from 'lucide-react';
 import { AnimatePresence, motion } from 'motion/react';
 import { useState } from 'react';
 
@@ -10,7 +10,7 @@ import MacOSWindow from './MacOSWindow';
 type CodeBlock = {
   label: string;
   value: string;
-  iconName: 'terminal' | 'box' | 'layers' | 'code';
+  iconName: 'terminal' | 'box' | 'layers' | 'code' | 'brain';
   description: string;
 
   codeHtml?: string;
@@ -27,6 +27,7 @@ const iconMap = {
   box: Box,
   layers: Layers,
   code: Code2,
+  brain: BrainCircuit,
 };
 
 const colorMap = {
@@ -34,6 +35,7 @@ const colorMap = {
   box: { text: 'text-purple-400', bg: 'bg-purple-500/10' },
   layers: { text: 'text-pink-400', bg: 'bg-pink-500/10' },
   code: { text: 'text-orange-400', bg: 'bg-orange-500/10' },
+  brain: { text: 'text-emerald-400', bg: 'bg-emerald-500/10' },
 };
 
 export default function InteractiveUsage({ blocks }: { blocks: CodeBlock[] }) {

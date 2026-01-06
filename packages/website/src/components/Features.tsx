@@ -1,7 +1,7 @@
 'use client';
 
 import { cn } from '@/lib/cn';
-import { GitMerge, History, LayoutTemplate, Terminal } from 'lucide-react';
+import { BrainCircuit, GitMerge, History, LayoutTemplate, Terminal } from 'lucide-react';
 import { motion } from 'motion/react';
 
 import Section from './Section';
@@ -16,15 +16,6 @@ const FEATURES = [
     bg: 'bg-blue-500/10',
   },
   {
-    title: 'DevTools & Persistence',
-    packageName: [{ name: '@motif-ts/middleware', active: true }],
-    description:
-      'Time-travel with Redux DevTools, export/import full snapshots or just the workflow config, and safely restore any state.',
-    icon: History,
-    color: 'text-purple-400',
-    bg: 'bg-purple-500/10',
-  },
-  {
     title: 'Framework Adapters',
     packageName: [
       { name: '@motif-ts/react', active: true },
@@ -35,6 +26,25 @@ const FEATURES = [
     icon: LayoutTemplate,
     color: 'text-pink-400',
     bg: 'bg-pink-500/10',
+  },
+  {
+    title: 'DevTools & Persistence',
+    packageName: [{ name: '@motif-ts/middleware', active: true }],
+    description:
+      'Time-travel with Redux DevTools, export/import full snapshots or just the workflow config, and safely restore any state.',
+    icon: History,
+    color: 'text-purple-400',
+    bg: 'bg-purple-500/10',
+  },
+
+  {
+    title: 'AI Native',
+    packageName: [{ name: '@motif-ts/ai', active: true }],
+    description:
+      'Let AI autonomously create, run, and evolve workflows. LLMs analyze execution patterns and self-improve the workflow structure over time.',
+    icon: BrainCircuit,
+    color: 'text-emerald-400',
+    bg: 'bg-emerald-500/10',
   },
   {
     title: 'Expression Engine',
@@ -54,7 +64,7 @@ export default function Features() {
       title="Core Capabilities"
       description="Essential primitives for building robust, scalable workflows."
     >
-      <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
+      <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
         {FEATURES.map((feature, index) => (
           <motion.div
             key={feature.title}
