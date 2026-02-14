@@ -1,5 +1,9 @@
 # motif-ts
 
+[![npm version](https://img.shields.io/npm/v/@motif-ts/core?style=flat-square&color=cb3837)](https://www.npmjs.com/package/@motif-ts/core)
+[![License](https://img.shields.io/badge/license-MIT-blue?style=flat-square)](https://opensource.org/licenses/MIT)
+[![Repo Size](https://img.shields.io/github/repo-size/Cryrivers/motif-ts?style=flat-square)](https://github.com/Cryrivers/motif-ts)
+
 **Dead Simple. Fully Typed. Effortlessly Orchestrated.**
 
 `motif-ts` is a type-safe workflow orchestrator for TypeScript. It allows you to build complex state machines and workflows with fully typed steps, dynamic edge conditions, and time-travel debugging capabilities. It is designed to be framework-agnostic while providing first-class support for React.
