@@ -1,12 +1,12 @@
 'use client';
 
-import { cn } from '@/lib/cn';
 import { Database, FileJson, Settings, Terminal } from 'lucide-react';
 import { AnimatePresence, motion } from 'motion/react';
 import { useState } from 'react';
 
 import MacOSWindow from './MacOSWindow';
 import SectionHeading from './SectionHeading';
+import { cn } from '@/lib/cn';
 
 type ConceptPart = 'input' | 'output' | 'config' | 'store' | 'step' | 'api' | null;
 

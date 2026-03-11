@@ -1,11 +1,11 @@
 'use client';
 
-import { cn } from '@/lib/cn';
 import { Box, Code2, Layers, Terminal } from 'lucide-react';
 import { AnimatePresence, motion } from 'motion/react';
 import { useState } from 'react';
 
 import MacOSWindow from './MacOSWindow';
+import { cn } from '@/lib/cn';
 
 type CodeBlock = {
   label: string;

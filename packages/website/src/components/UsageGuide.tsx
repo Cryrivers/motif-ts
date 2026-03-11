@@ -1,7 +1,6 @@
-import { highlight } from '@/lib/shiki';
-
 import InteractiveUsage from './InteractiveUsage';
 import Section from './Section';
+import { highlight } from '@/lib/shiki';
 
 export default async function UsageGuide() {
   const installCode = `pnpm add @motif-ts/core @motif-ts/react`;

@@ -5,17 +5,14 @@ import { RotateCcw } from 'lucide-react';
 import { motion } from 'motion/react';
 import { Activity, useEffect, useState } from 'react';
 import ReactFlow, { Background, Edge, MarkerType, Node, useEdgesState, useNodesState } from 'reactflow';
-
 import 'reactflow/dist/style.css';
-
-import { cn } from '@/lib/cn';
-
 import GlassPanel from '../GlassPanel';
 import MotifStepNode, { MotifStepData } from '../MotifStepNode';
 import Section from '../Section';
 import LivePreview from './LivePreview';
 import { initiateWorkflow, InputStep, PlanStep, ProfileStep, SuccessStep, VerifyStep } from './utils';
 import YourCode from './YourCode';
+import { cn } from '@/lib/cn';
 
 const nodeTypes = {
   motifStep: MotifStepNode,

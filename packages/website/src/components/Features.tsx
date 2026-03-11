@@ -1,10 +1,10 @@
 'use client';
 
-import { cn } from '@/lib/cn';
 import { GitMerge, History, LayoutTemplate, Terminal } from 'lucide-react';
 import { motion } from 'motion/react';
 
 import Section from './Section';
+import { cn } from '@/lib/cn';
 
 const FEATURES = [
   {

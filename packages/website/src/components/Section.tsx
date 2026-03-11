@@ -1,7 +1,7 @@
-import { cn } from '@/lib/cn';
 import { ReactNode } from 'react';
 
 import SectionHeading from './SectionHeading';
+import { cn } from '@/lib/cn';
 
 interface SectionProps {
   id: string;

@@ -1,12 +1,12 @@
 'use client';
 
-import { cn } from '@/lib/cn';
 import { Code, Play } from 'lucide-react';
 import { FC, useEffect, useRef, useState } from 'react';
 import { createHighlighter, Highlighter } from 'shiki';
 
 import Button from '../../Button';
 import GlassPanel from '../../GlassPanel';
+import { cn } from '@/lib/cn';
 
 // --- Shiki Hook ---
 const useShiki = (code: string) => {

@@ -1,10 +1,11 @@
 'use client';
 
-import { cn } from '@/lib/cn';
 import { Github, Menu, X } from 'lucide-react';
 import { AnimatePresence, motion } from 'motion/react';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
+
+import { cn } from '@/lib/cn';
 
 export default function Header() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);

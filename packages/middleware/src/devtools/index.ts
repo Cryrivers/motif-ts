@@ -1,5 +1,4 @@
 import { type CleanupFn, type StepCreatorAny, type StepInstance, type WorkflowAPI } from '@motif-ts/core';
-
 import type {} from '@redux-devtools/extension';
 
 export type DevtoolsOptions = {

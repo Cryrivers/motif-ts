@@ -1,8 +1,8 @@
-import { cn } from '@/lib/cn';
 import { LucideIcon } from 'lucide-react';
 import { ReactNode } from 'react';
 
 import GlassPanel from './GlassPanel';
+import { cn } from '@/lib/cn';
 
 interface FeatureCardProps {
   title: string;

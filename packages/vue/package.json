@@ -2,36 +2,35 @@
   "name": "@motif-ts/vue",
   "version": "0.0.0",
   "description": "Vue bindings for motif-ts",
+  "keywords": [],
+  "license": "MIT",
+  "author": {
+    "name": "Zhongliang Wang",
+    "email": "hello@zhongliang.wang",
+    "url": "https://zhongliang.wang"
+  },
+  "type": "module",
+  "sideEffects": false,
   "exports": {
     ".": {
       "types": "./dist/index.d.mts",
       "default": "./dist/index.mjs"
     }
   },
-  "sideEffects": false,
   "scripts": {
     "test": "vitest run --typecheck",
-    "format": "prettier \"**/*.{md,ts,cjs,mjs,json}\" --write",
+    "format": "oxfmt --write",
     "lint:fix": "eslint \"{src,tests}/**/*.ts\" --fix",
     "type-check": "tsc --noEmit",
     "build": "tsdown --minify",
     "dev": "tsdown --watch"
   },
-  "keywords": [],
-  "author": {
-    "name": "Zhongliang Wang",
-    "url": "https://zhongliang.wang",
-    "email": "hello@zhongliang.wang"
-  },
-  "license": "MIT",
-  "type": "module",
   "devDependencies": {
     "@eslint/js": "^10.0.1",
-    "@ianvs/prettier-plugin-sort-imports": "^4.7.1",
     "@motif-ts/core": "workspace:*",
     "@vitest/coverage-v8": "4.0.18",
     "eslint": "^10.0.3",
-    "prettier": "^3.8.1",
+    "oxfmt": "^0.38.0",
     "tsdown": "^0.21.1",
     "typescript": "^5.9.3",
     "typescript-eslint": "^8.57.0",

@@ -1,6 +1,7 @@
-import { cn } from '@/lib/cn';
 import { HTMLMotionProps, motion } from 'motion/react';
 import { ReactNode } from 'react';
+
+import { cn } from '@/lib/cn';
 
 interface GlassPanelProps extends HTMLMotionProps<'div'> {
   children: ReactNode;

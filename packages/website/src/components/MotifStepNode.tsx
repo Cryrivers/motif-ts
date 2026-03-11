@@ -1,9 +1,10 @@
 'use client';
 
-import { cn } from '@/lib/cn';
 import { Database } from 'lucide-react';
 import { useMemo } from 'react';
 import { Handle, NodeProps, Position } from 'reactflow';
+
+import { cn } from '@/lib/cn';
 
 export type MotifStepData = {
   label: string;

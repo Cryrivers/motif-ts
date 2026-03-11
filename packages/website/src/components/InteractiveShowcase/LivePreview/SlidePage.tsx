@@ -1,8 +1,9 @@
 'use client';
 
-import { cn } from '@/lib/cn';
 import { motion, Variants } from 'motion/react';
 import { ReactNode } from 'react';
+
+import { cn } from '@/lib/cn';
 
 const slideVariants: Variants = {
   enter: (direction: number) => ({

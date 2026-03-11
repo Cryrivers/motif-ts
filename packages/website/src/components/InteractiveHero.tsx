@@ -1,17 +1,15 @@
 'use client';
 
-import { useCallback, useEffect, useState } from 'react';
-import ReactFlow, { Background, Edge, Node, useEdgesState, useNodesState } from 'reactflow';
-
-import 'reactflow/dist/style.css';
-
-import { cn } from '@/lib/cn';
 import { ArrowRight } from 'lucide-react';
 import { motion } from 'motion/react';
+import 'reactflow/dist/style.css';
+import { useCallback, useEffect, useState } from 'react';
+import ReactFlow, { Background, Edge, Node, useEdgesState, useNodesState } from 'reactflow';
 
 import Button from './Button';
 import GlassPanel from './GlassPanel';
 import MotifStepNode, { MotifStepData } from './MotifStepNode';
+import { cn } from '@/lib/cn';
 
 const nodeTypes = {
   motifStep: MotifStepNode,
