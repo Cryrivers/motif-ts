@@ -21,7 +21,6 @@ export function InputPage({ onSubmit, custom }: InputPageProps) {
         className="space-y-4"
         onSubmit={(e) => {
           e.preventDefault();
-          // @ts-expect-error - accessing form elements directly
           onSubmit(e.target.email.value);
         }}
       >
