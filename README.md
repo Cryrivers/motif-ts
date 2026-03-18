@@ -6,7 +6,7 @@
 
 **Dead Simple. Fully Typed. Effortlessly Orchestrated.**
 
-`motif-ts` is a type-safe workflow orchestrator for TypeScript. It allows you to build complex state machines and workflows with fully typed steps, dynamic edge conditions, and time-travel debugging capabilities. It is designed to be framework-agnostic while providing first-class support for React.
+`motif-ts` is a type-safe workflow orchestrator for TypeScript. It lets you build complex state machines and workflows with fully typed steps, dynamic edge conditions, and time-travel debugging capabilities. It is designed to be framework-agnostic while providing first-class support for React.
 
 ## Packages
 
@@ -29,15 +29,15 @@ This repository is a monorepo containing the following packages:
 
 ## Usage Example
 
-Here is a quick example of how to define a simple workflow, connect it, and use it.
+Here is a quick example of how to define a simple workflow, connect its steps, and use it.
 
 ### 1. Define Steps
 
 Use the `step` helper to define atomic units of work.
 
 - **Input/Output/Config Schemas**: Define validation and types for step data.
-- **`apiSchema` (Optional)**: Define the API shape and use `.describe()` to provide context for AI agents.
-- **`createStore`**: define local, reactive state for the step (uses [Zustand](https://github.com/pmndrs/zustand)).
+- **`apiSchema` (Optional)**: Define the API shape, and use `.describe()` to provide context for AI agents.
+- **`createStore`**: Define local, reactive state for the step (using [Zustand](https://github.com/pmndrs/zustand)).
 - **Lifecycle & Effects**: Use `transitionIn`, `transitionOut`, and `effect` to orchestrate side effects.
 
 ```typescript
@@ -75,7 +75,7 @@ const verifyStore: StateCreator<VerifyState> = (set) => ({
   setChecking: (isChecking) => set({ isChecking }),
 });
 
-// A step that verifies the email with a countdown and mock async check
+// A step that verifies the email with a countdown and a mock async check
 const VerifyEmail = step(
   {
     kind: 'VerifyEmail',
