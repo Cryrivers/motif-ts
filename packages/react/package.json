@@ -26,11 +26,11 @@
     "dev": "tsdown --watch"
   },
   "devDependencies": {
-    "@eslint/js": "^10.0.1",
+    "@eslint/js": "^9.39.4",
     "@motif-ts/core": "workspace:*",
     "@types/react": "^19.2.14",
     "@vitest/coverage-v8": "4.1.0",
-    "eslint": "^10.0.3",
+    "eslint": "^9.39.4",
     "oxfmt": "^0.41.0",
     "react": "^19.2.4",
     "tsdown": "^0.21.4",

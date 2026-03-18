@@ -30,10 +30,7 @@ export default defineConfig({
         'ts-nocheck': true,
       },
     ],
-    '@typescript-eslint/consistent-type-imports': [
-      'warn',
-      { prefer: 'type-imports', fixStyle: 'inline-type-imports' },
-    ],
+    '@typescript-eslint/consistent-type-imports': ['warn', { prefer: 'type-imports', fixStyle: 'inline-type-imports' }],
     '@typescript-eslint/consistent-type-exports': 'warn',
     '@typescript-eslint/no-inferrable-types': 'error',
     '@typescript-eslint/no-unnecessary-type-parameters': 'error',

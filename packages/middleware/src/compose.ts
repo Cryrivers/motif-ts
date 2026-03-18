@@ -35,7 +35,7 @@ export function composeMiddleware<E1, E2, E3, E4>(
 ): MiddlewareFn<E1 & E2 & E3 & E4>;
 export function composeMiddleware(...middlewares: MiddlewareFn<any>[]): MiddlewareFn<any> {
   return <const Creators extends readonly StepCreatorAny[]>(workflow: WorkflowAPI<Creators>) => {
-    return middlewares.reduce((acc, middleware) => middleware(acc), workflow) as WorkflowAPI<Creators>;
+    return middlewares.reduce((acc, middleware) => middleware(acc), workflow);
   };
 }
 
@@ -52,5 +52,5 @@ export function applyMiddleware<const Creators extends readonly StepCreatorAny[]
   workflow: WorkflowAPI<Creators>,
   middleware: MiddlewareFn<E>,
 ): WorkflowAPI<Creators> & E {
-  return middleware(workflow) as WorkflowAPI<Creators> & E;
+  return middleware(workflow);
 }
