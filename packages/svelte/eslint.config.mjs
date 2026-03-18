@@ -1,3 +1,43 @@
-import baseConfig from '../../eslint.config.base.mjs';
+import { defineConfig } from 'eslint/config';
+import tseslint from 'typescript-eslint';
 
-export default [...baseConfig];
+export default defineConfig({
+  name: 'motif-ts-svelte',
+  files: ['**/*.ts'],
+  plugins: {
+    '@typescript-eslint': tseslint.plugin,
+  },
+  languageOptions: {
+    parser: tseslint.parser,
+    ecmaVersion: 2018,
+    sourceType: 'module',
+    parserOptions: {
+      projectService: true,
+      tsconfigRootDir: import.meta.dirname,
+    },
+    globals: {
+      process: 'readonly',
+    },
+  },
+  rules: {
+    curly: ['error', 'all'],
+    '@typescript-eslint/ban-ts-comment': [
+      'error',
+      {
+        'ts-check': false,
+        'ts-expect-error': false,
+        'ts-ignore': true,
+        'ts-nocheck': true,
+      },
+    ],
+    '@typescript-eslint/consistent-type-imports': [
+      'warn',
+      { prefer: 'type-imports', fixStyle: 'inline-type-imports' },
+    ],
+    '@typescript-eslint/consistent-type-exports': 'warn',
+    '@typescript-eslint/no-inferrable-types': 'error',
+    '@typescript-eslint/no-unnecessary-type-parameters': 'error',
+    '@typescript-eslint/no-unnecessary-type-constraint': 'error',
+    '@typescript-eslint/no-unnecessary-type-assertion': 'error',
+  },
+});
